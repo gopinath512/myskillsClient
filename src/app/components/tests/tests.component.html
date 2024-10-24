@@ -18,23 +18,24 @@
   </div>-->
 
   <div class="row control-box">
-    <div class="col-lg-8">
+    <div class="col-lg-10">
       <div class="search-box">
         <app-search-box (searchChange)="onSearchChanged($event)" placeholder="Search"></app-search-box>
       </div>
     </div>
-    <div class="col-lg-4 pe-lg-5">
+    <div class="col-lg-2 pe-lg-5">
       <ul class="nav flex-column flex-lg-row justify-content-end">
         <li *ngIf="canCreateTest" class="nav-item toolbaritem">
-          <a class="nav-link" href="javascript:;" (click)="navigateToCreateTest()">
-            <i class="fa fa-plus-circle"></i> Create Test
-          </a>
+      <button (click)="navigateToCreateTest()" type="button" class="btn btn-primary createTest">
+        <i class="fa fa-plus-circle"></i> Create Test
+    </button>
+
         </li>
       </ul>
     </div>
   </div>
 
-  <ul class="nav nav-tabs" role="tablist">
+  <!-- <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item" role="presentation">
       <a class="nav-link" href="javascript:void(0);" [class.active]="activeTab === TestStatusViewModel.Upcoming" (click)="selectTab(TestStatusViewModel.Upcoming)">Upcoming Tests</a>
     </li>
@@ -44,12 +45,57 @@
     <li class="nav-item" role="presentation">
       <a class="nav-link" href="javascript:void(0);" [class.active]="activeTab === TestStatusViewModel.Completed" (click)="selectTab(TestStatusViewModel.Completed)">Completed</a>
     </li>
-  </ul>
+  </ul> -->
+
+  <mat-tab-group >
+    <mat-tab label="Upcoming Tests">
+      <div id="myTabContent" class="tab-content">
+        <ngx-datatable
+                       [loadingIndicator]="loadingIndicator"
+                       class="material colored-header sm table-x table-striped table-hover"
+                       [rows]="filteredUpcomingTests"
+                       [columns]="columns"
+                       [columnMode]="'force'"
+                       [headerHeight]="50"
+                       [footerHeight]="50"
+                       [rowHeight]="'auto'">
+        </ngx-datatable>
+    </div>
+    </mat-tab>
+    <mat-tab label="In Progress">
+      <div id="myTabContent" class="tab-content">
+          <ngx-datatable 
+                         class="material colored-header sm table-x table-striped table-hover"
+                         [loadingIndicator]="loadingIndicator"
+                         [rows]="filteredInProgressTests"
+                         [columns]="columns"
+                         [columnMode]="'force'"
+                         [headerHeight]="50"
+                         [footerHeight]="50"
+                         [rowHeight]="'auto'">
+          </ngx-datatable>
+      </div>
+    </mat-tab>
+    <mat-tab label="Completed">
+      <div id="myTabContent" class="tab-content">
+          <ngx-datatable 
+                         class="material colored-header sm table-x table-striped table-hover"
+                         [rows]="filteredCompletedTests"
+                         [loadingIndicator]="loadingIndicator"
+                         [columns]="columns"
+                         [columnMode]="'force'"
+                         [headerHeight]="50"
+                         [footerHeight]="50"
+                         [rowHeight]="'auto'">
+          </ngx-datatable>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 
   <!-- Tab Content -->
-  <div id="myTabContent" class="tab-content">
+  <!-- <div id="myTabContent" class="tab-content"> -->
     <!-- Upcoming Tests Tab -->
-    <div class="tab-pane fade" [class.show]="activeTab === TestStatusViewModel.Upcoming" [class.active]="activeTab === TestStatusViewModel.Upcoming" id="upcomingTests" role="tabpanel">
+    <!-- <div class="tab-pane fade" [class.show]="activeTab === TestStatusViewModel.Upcoming" [class.active]="activeTab === TestStatusViewModel.Upcoming" id="upcomingTests" role="tabpanel">
       <ngx-datatable *ngIf="activeTab === TestStatusViewModel.Upcoming"
                      [loadingIndicator]="loadingIndicator"
                      class="material colored-header sm table-x table-striped table-hover"
@@ -60,10 +106,10 @@
                      [footerHeight]="50"
                      [rowHeight]="'auto'">
       </ngx-datatable>
-    </div>
+    </div> -->
 
     <!-- In Progress Tests Tab -->
-    <div class="tab-pane fade" [class.show]="activeTab === TestStatusViewModel.InProgress" [class.active]="activeTab === TestStatusViewModel.InProgress" id="inProgress" role="tabpanel">
+    <!-- <div class="tab-pane fade" [class.show]="activeTab === TestStatusViewModel.InProgress" [class.active]="activeTab === TestStatusViewModel.InProgress" id="inProgress" role="tabpanel">
       <ngx-datatable *ngIf="activeTab === TestStatusViewModel.InProgress"
                      class="material colored-header sm table-x table-striped table-hover"
                      [loadingIndicator]="loadingIndicator"
@@ -74,10 +120,10 @@
                      [footerHeight]="50"
                      [rowHeight]="'auto'">
       </ngx-datatable>
-    </div>
+    </div> -->
 
     <!-- Completed Tests Tab -->
-    <div class="tab-pane fade" [class.show]="activeTab === TestStatusViewModel.Completed" [class.active]="activeTab === TestStatusViewModel.Completed" id="completed" role="tabpanel">
+    <!-- <div class="tab-pane fade" [class.show]="activeTab === TestStatusViewModel.Completed" [class.active]="activeTab === TestStatusViewModel.Completed" id="completed" role="tabpanel">
       <ngx-datatable *ngIf="activeTab === TestStatusViewModel.Completed"
                      class="material colored-header sm table-x table-striped table-hover"
                      [rows]="filteredCompletedTests"
@@ -88,8 +134,8 @@
                      [footerHeight]="50"
                      [rowHeight]="'auto'">
       </ngx-datatable>
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
 
 
   <!-- Templates for ngx-datatable (common for all tabs if applicable) -->

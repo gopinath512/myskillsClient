@@ -3,31 +3,34 @@ $footerHeight: 40px;
 .app-container {
   min-height: 100vh;
   display: flex;
+  flex-direction: column; // Use column layout for proper stacking
   height: 100%;
-  background-color: #F4F2EE !important;
+  background-color: #F4F2EE !important; // Light background color
 }
 
 main {
-  height: calc(100% - #{$footerHeight});
-  padding-top: 60px;
-  background-color: #F4F2EE !important;
+  flex: 1; // Allow main to take the remaining space
+  padding-top: 80px; // Increased padding-top for more spacing below the header
+  padding-bottom: 20px; // Added padding-bottom for spacing after content
+  background-color: #F4F2EE !important; // Maintain light background
 }
 
 .footer-height {
   height: $footerHeight;
-  background-color: #F4F2EE;
+  background-color: #F4F2EE; // Keep footer background light
 }
 
 .main-content {
-  flex: 1; /* This makes sure the main content takes the remaining space between the navbar and footer */
+  flex: 1; // Ensure main content takes the remaining space between navbar and footer
 }
-
 
 footer {
   width: 100%;
   height: $footerHeight;
   line-height: $footerHeight;
-  background-color: #f5f5f5;
+  background-color: #EAEAEA; // Light gray for footer background
+  color: #333; // Darker text color for contrast
+  text-align: center; // Center text in footer
 }
 
 .close-navbar-toggler {
@@ -40,71 +43,106 @@ footer {
   z-index: 999;
 }
 
-.bg-white{
-    background-color:white;
+.bg-white {
+  background-color: white; // Maintain white background where needed
 }
+
 .close-navbar-toggler.collapsed {
-  display: none;
+  display: none; // Hide toggler when collapsed
+}
+
+.navbar {
+  background-color: #E2E0D6 !important; // Slightly darker light background for navbar
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); // Increased shadow for more depth
 }
 
 .navbar-brand > img {
-  height: 30px;
+  height: 30px; // Logo height
 }
 
 .navbar .nav-pills a:focus,
 .navbar .nav-pills a:hover {
-  //color: #575757;
-  color: #0D6EFD;
+  color: #007BFF; // Change link color on hover
 }
 
 .navbar .nav-pills > .active > a,
 .navbar .nav-pills > .active > a:hover,
 .navbar .nav-pills > .active > a:focus {
-  background-color: ghostwhite;
-  color: #0D6EFD;
+  background-color: #D9E8FF; // Light blue for active link background
+  color: #007BFF; // Active link text color
 }
 
 .navbar .nav-link,
 .navbar .navbar-text {
-  color: black;
+  color: #333; // Darker text for navbar items
 }
+
 .container-xl {
-  color: #555; /* Light dark color for container content */
- // background-color: #F4F2EE;
+  color: #555; // Slightly dark color for container content
 }
 
 .navbar .nav-pills > li > a {
-  font-weight: bold;
-  padding-top: 0.4rem;
-  padding-bottom: 0.4rem;
+  font-weight: bold; // Bold links
+  padding: 0.4rem 1rem; // Uniform padding for links
+}
+
+.notifications-popup {
+  color: #333; // Darker color for notifications to ensure visibility
+}
+
+.badge.bg-secondary {
+  background-color: #6c757d; // Notification badge color
+}
+
+.prebootStep {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9); // Slightly transparent background
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.messaging h1 {
+  font-size: 2.5rem; // Large font size for the header
+  color: #007BFF; // Primary color for heading
+}
+
+.messaging p {
+  font-size: 1.2rem; // Font size for paragraph
+  color: #555; // Darker color for better readability
+}
+
+.modal-content {
+  border-radius: 0.5rem; // Rounded corners for modals
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Soft shadow for depth
 }
 
 /* Hide scrollbar for input[type=number] in WebKit browsers (Chrome, Safari, etc.) */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Hide scrollbar for Firefox */
 input[type=number] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
-
 
 @media screen and (max-width: 991px) {
   .navbar .nav-pills > li + li {
     margin-left: 0;
-    margin-top: 1px;
+    margin-top: 1px; // Margin for mobile spacing
   }
 }
 
 @media screen and (min-width: 992px) {
   .navbar .nav-pills > li + li {
-    margin-left: 2px;
+    margin-left: 2px; // Margin for desktop spacing
   }
-
-
-
-
 }

@@ -16,11 +16,13 @@
 
     <div class="col-12 mb-4 widget-container px-0">
       <div class="card card-body bg-light">
-        <h5 class="text-muted d-inline-block">{{'home.StatisticsTitleForTest' | translate}}</h5>
+        <h5 class="card-title text-center">{{'home.StatisticsTitleForTest' | translate}}</h5>
         <div *cdkDragPlaceholder [ngStyle]="{'min-height.px': dashboardStatistics.offsetHeight }" class="widget-container-placeholder mb-4"></div>
         <app-user-subject-coverage-stats></app-user-subject-coverage-stats>
       </div>
     </div>
+
+    
 
 
     <!--<div class="col-12 mb-4 widget-container px-0">
@@ -33,7 +35,7 @@
 
     <div class="col-12 mb-4 widget-container px-0">
       <div class="card card-body bg-light">
-        <h5 class="text-muted d-inline-block">Overall Report</h5>
+        <h5 class="card-title text-center">Overall Report</h5>
         <div *cdkDragPlaceholder [ngStyle]="{'min-height.px': dashboardStatistics.offsetHeight }" class="widget-container-placeholder mb-4"></div>
         <app-subject-analysis-report></app-subject-analysis-report>
       </div>

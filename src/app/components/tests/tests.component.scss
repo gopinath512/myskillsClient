@@ -5,3 +5,53 @@
 .custom-modal-width-viewquestion {
   max-width: 70%; /* Adjust as needed */
 }
+
+.control-box{
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.nav-link{
+  color: black;
+}
+
+::ng-deep .mat-ink-bar {
+  background-color: black !important; /* Set the ink bar color to black */
+  height: 4px !important; /* Increase the thickness of the ink bar */
+}
+
+::ng-deep .mat-tab-label-content{
+  font-weight: 600;
+  font-size: 16px;
+  color: black;
+}
+
+:host ::ng-deep .datatable-header {
+  background-color: #f5f7f9 !important;          /* Set background color to black */
+  border-radius: 10px;             /* Round the corners */
+  display: flex !important;                    /* Flexbox for alignment */
+  align-items: center !important;              /* Center items vertically */
+  margin-top: 20px;                /* Add margin to the top */
+  color: black !important;                     /* Set text color to white */
+}
+
+
+:host ::ng-deep .empty-row.ng-star-inserted {
+  justify-content: center;          /* Center the content horizontally */
+  display: flex;                    /* Use flexbox for alignment */
+  font-size: 17px;                 /* Set font size */
+  padding: 10px;                   /* Add padding */
+
+}
+
+:host ::ng-deep .page-count.ng-star-inserted {
+  justify-content: flex-end;         /* Align the content to the right */
+  display: flex;                     /* Use flexbox for alignment */
+  font-size: 16px;                  /* Set font size for the page count */
+  padding: 10px;                    /* Optional: add padding for spacing */
+}
+
+.createTest{
+  padding: 10px 20px !important;
+  background-color: black;
+}

@@ -1,0 +1,116 @@
+.statistics-container {
+    margin-top: 20px;
+    /* Space above the entire container */
+}
+
+.chart-container {
+    background-color: #fff;
+    /* White background for the chart container */
+    border-radius: 15px;
+    /* Rounded corners */
+    padding: 20px;
+    /* Inner padding */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    /* More pronounced shadow for depth */
+}
+
+.table-responsive {
+    background-color: #fff;
+    /* White background for the chart container */
+    border-radius: 15px;
+    /* Rounded corners */
+    padding: 20px;
+    /* Inner padding */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    /* More pronounced shadow for depth */
+}
+
+.card-title {
+    font-size: 1.8rem;
+    /* Larger font size */
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    /* Fun font for kids */
+    font-weight: bold;
+    /* Bold font for emphasis */
+    color: #FF6F61;
+    /* Fun color for the title */
+    margin-bottom: 15px;
+    /* Space below the title */
+}
+
+.table {
+    background-color: #F4F2EE;
+    /* Light background for the table */
+    border-radius: 10px;
+    /* Rounded corners for the table */
+    margin-top: 20px;
+    /* Add some space above the table */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #ffe0b3;
+    /* Light hover effect for table rows */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #FFCC00;
+    /* Alternate row color for visibility */
+}
+
+.table th {
+    background-color: #FF6F61;
+    /* Bright header for table */
+    color: #fff;
+    /* White text for contrast */
+}
+
+.table td {
+    color: #333;
+    /* Dark color for table data */
+}
+
+.table td a {
+    color: #FF6F61;
+    /* Color for clickable links in table */
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.table td a:hover {
+    color: #FF3D3D;
+    /* Darker color on hover */
+    text-decoration: underline;
+}
+
+/* Style for the subject link */
+/* Style for the subject link */
+.subject-link {
+    cursor: pointer;
+    /* Hand cursor on hover */
+    color: #fff;
+    /* White text color */
+    text-decoration: underline;
+    /* Underline the link */
+    text-decoration-color: rgba(255, 255, 255, 0.5);
+    /* Light white underline */
+    display: inline-flex;
+    /* Align icon next to text */
+    align-items: center;
+    text-underline-offset: 3px;
+    /* Offset underline for cleaner look */
+}
+
+.subject-link:hover {
+    text-decoration-color: #fff;
+    /* Darker white underline on hover */
+}
+
+/* White icon next to the subject name */
+.subject-link i {
+    font-size: 1rem;
+    /* Adjust the size of the icon */
+    color: #fff;
+    /* White icon color */
+    margin-left: 5px;
+    /* Small space between text and icon */
+}

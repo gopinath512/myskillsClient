@@ -1,34 +1,41 @@
 <div class="row statistics-container">
-  <div class="col-md-7">
-    <div class="chart-container">
-      <canvas baseChart width="600" height="250"
-              [datasets]="chartData"
-              [labels]="chartLabels"
-              [options]="chartOptions"
-              [legend]="true"
-              [type]="chartType"
-              (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
+  <div class="col-md-12">
+    <div class="chart-container card shadow-lg mb-4">
+      <div class="card-body">
+        <canvas baseChart 
+                width="600" 
+                height="250"
+                [datasets]="chartData"
+                [labels]="chartLabels"
+                [options]="chartOptions"
+                [legend]="true"
+                [type]="chartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+      </div>
     </div>
   </div>
-  <div class="col-md-5">
-    <div class="d-none d-sm-block table-responsive">
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th class="border-top-0"></th>
-            <th class="border-top-0" *ngFor="let label of chartLabels">{{label}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let d of chartData">
-            <th>{{d && d.label.split(' ').pop()}}</th>
-            <td *ngFor="let label of chartLabels; let j=index">{{d && d.data[j]}}</td>
-          </tr>
-        </tbody>
-      </table>
+
+  <div class="col-md-12">
+    <div class="table-responsive card shadow-lg">
+      <div class="card-body">
+        <h5 class="card-title text-center">Statistics Table</h5>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="border-top-0"></th>
+              <th class="border-top-0" *ngFor="let label of chartLabels">{{label}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of chartData">
+              <th>{{d && d.label.split(' ').pop()}}</th>
+              <td *ngFor="let label of chartLabels; let j=index">{{d && d.data[j]}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <button class="refresh-btn" (click)="randomize();showMessage('Manual refresh!');">REFSH</button>
-    
+    <button class="refresh-btn" (click)="randomize();showMessage('Manual refresh!');">🔄 Refresh</button>
   </div>
 </div>

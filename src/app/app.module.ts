@@ -107,6 +107,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms'; 
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   schemas: [NO_ERRORS_SCHEMA],
@@ -191,6 +192,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatStepperModule,
     MatButtonModule,
+    MatTabsModule,
     ReactiveFormsModule
   ],
   providers: [
