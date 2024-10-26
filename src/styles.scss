@@ -243,7 +243,7 @@ i.page-caption {
 }
 
 .ngx-datatable.scroll-vertical {
-  height: 64vh;
+  // height: 64vh;
 }
 
 .black-anchor {
@@ -466,6 +466,17 @@ a:not([class*="btn"]):hover {
 .ck.ck-editor__top {
   box-shadow: none !important;
   border-top: none !important;
+}
+
+/* Changing primary button color to black*/
+.btn-primary {
+  background-color: black !important;
+  border-color: black !important;
+}
+
+.btn-primary:hover {
+  background-color: #333 !important;
+  border-color: #333 !important;
 }
 
 /* End */

@@ -1,58 +1,47 @@
 <!-- subject-analysis-report.component.html -->
-<div class="row statistics-container">
-  <div class="col-md-12">
-    <div class="table-responsive card shadow-lg">
-      <div class="card-body">
-        <table class="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Subject Name</th>
-              <th scope="col">Total Tests Taken</th>
-              <th scope="col">Total In-Progress Tests</th>
-              <th scope="col">Overall Achievement</th>
-              <th scope="col">Correct Percentage</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let report of subjectAnalysisReport" [ngClass]="{
-                  'table-success': report.overallAchievement === 'High',
-                  'table-warning': report.overallAchievement === 'Medium',
-                  'table-danger': report.overallAchievement === 'Low'
-                }">
-              <th scope="row">
-                <!-- Subject Name with clickable hyperlink, white text and light underline -->
-                <a (click)="openTopicDifficultyModal(report?.subjectId)" class="subject-link">
-                  {{ report?.subjectName }}
-                  <!-- White icon next to the subject name (e.g., a book icon) -->
-                  <i class="fa fa-book ms-2"></i>
-                </a>
-              </th>
-              <td>{{ report?.totalTestsTaken }}</td>
-              <td>{{ report?.totalInProgressTests }}</td>
-              <td>{{ report?.overallAchievement }}</td>
-              <td>{{ report?.correctPercentage ? (report?.correctPercentage | number : '1.0-2') + '%' : 'N/A' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="container mt-3">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Subject Name</th>
+        <th scope="col">Total Tests Taken</th>
+        <th scope="col">Total In-Progress Tests</th>
+        <th scope="col">Overall Achievement</th>
+        <th scope="col">Correct Percentage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let report of subjectAnalysisReport" [ngClass]="{'table-success': report.overallAchievement === 'High', 'table-warning': report.overallAchievement === 'Medium', 'table-danger': report.overallAchievement === 'Low'}">
+        <th scope="row">
+          <a (click)="openTopicDifficultyModal(report?.subjectId)">{{ report?.subjectName }}</a>
+        </th>
+        <td>{{ report?.totalTestsTaken }}</td>
+        <td>{{ report?.totalInProgressTests }}</td>
+        <td>{{ report?.overallAchievement }}</td>
+        <td>{{ report?.correctPercentage ? (report?.correctPercentage | number : '1.0-2') + '%' : 'N/A' }}</td>
+      </tr>
+    </tbody>
+  </table>
 
-<!-- Modal for Topic Difficulty Analysis -->
-<div class="modal fade" bsModal #testsubjectEditorModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1">
+
+
+</div>
+<!-- This part goes inside your subject-analysis-report.component.html -->
+<div  class="modal fade" bsModal #testsubjectEditorModal="bs-modal"  [config]="{backdrop: 'static'}" tabindex="-1">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Topic Difficulty Analysis</h5>
-        <button type="button" class="btn-close" aria-label="Close" (click)="hideAttemptModalRefModal()"></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="hideAttemptModalRefModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
         <app-topic-difficulty-analysis-report [parentId]="selectedUserId" [subjectId]="selectedSubjectId">
         </app-topic-difficulty-analysis-report>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="hideAttemptModalRefModal()">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="hideAttemptModalRefModal()">Close</button>
       </div>
     </div>
   </div>
