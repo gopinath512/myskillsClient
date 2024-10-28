@@ -4,7 +4,8 @@
 
 <div [@fadeInOut]>
   <div class="d-sm-flex flex-row mb-2">
-    <ul appBootstrapTab #tab="bootstrap-tab" (showBSTab)="onShowTab($event)" class="nav nav-tabs nav-tabs--vertical nav-tabs--left" role="navigation">
+    <div class="card settings-tab-card">
+    <ul appBootstrapTab #tab="bootstrap-tab" (showBSTab)="onShowTab($event)" class="nav nav-tabs nav-tabs--vertical tabs" role="navigation">
       <li class="nav-item">
         <a id="profileTab" [routerLink]="[]" fragment="profile" data-bs-target="#profile" href="#profile" class="nav-link active" role="tab" aria-controls="profile">
           <i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> {{'settings.tab.Profile' | translate}}
@@ -26,6 +27,8 @@
         </a>
       </li>
     </ul>
+  </div>
+  <div class="card settings-card content">
     <div class="tab-content w-100">
       <div class="tab-pane show active" id="profile" role="tabpanel">
         <h4>{{'settings.header.UserProfile' | translate}}</h4>
@@ -33,7 +36,6 @@
         <div [@fadeInOut] *ngIf="isProfileActivated" class="content-container ps-lg-2">
           <app-user-info></app-user-info>
         </div>
-
       </div>
       <div class="tab-pane" id="preferences" role="tabpanel">
         <h4>{{'settings.header.UserPreferences' | translate}}</h4>
@@ -56,6 +58,7 @@
           <app-roles-management></app-roles-management>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </div>

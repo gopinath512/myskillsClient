@@ -108,6 +108,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   schemas: [NO_ERRORS_SCHEMA],
@@ -193,7 +194,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatStepperModule,
     MatButtonModule,
     MatTabsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },

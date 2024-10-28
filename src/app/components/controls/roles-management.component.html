@@ -1,16 +1,16 @@
 <div>
   <div class="row control-box">
-    <div class="col-lg-8">
+    <div class="col-lg-9">
       <div class="search-box">
         <app-search-box (searchChange)="onSearchChanged($event)" placeholder="{{'roles.management.Search' | translate}}">></app-search-box>
       </div>
     </div>
-    <div class="col-lg-4 pe-lg-5">
+    <div class="col-lg-3 pe-lg-5">
       <ul class="nav flex-column flex-lg-row justify-content-end">
         <li *ngIf="canManageRoles" class="nav-item toolbaritem">
-          <a class="nav-link" href="javascript:;" (click)="newRole()">
-            <i class="fa fa-plus-circle"></i> {{'roles.management.NewRole' | translate}}
-          </a>
+            <button class="btn btn-primary createRole"  (click)="newRole()">
+              <i class="fa fa-plus-circle"></i> {{'roles.management.NewRole' | translate}}
+            </button>
         </li>
       </ul>
     </div>
