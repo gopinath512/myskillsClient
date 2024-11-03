@@ -152,6 +152,9 @@ onLoginModalHide() {
   this.alertService.resetStickyMessage();
 }
 
+isActive(route: string): boolean {
+  return this.router.url === route;
+}
 
 ngOnInit() {
   this.isUserLoggedIn = this.authService.isLoggedIn;
