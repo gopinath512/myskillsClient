@@ -3,14 +3,13 @@ $footerHeight: 40px;
 .app-container {
   min-height: 100vh;
   display: flex;
-  height: 100%;
-  background-color: #F4F2EE !important;
+  background-color: #FFF !important;
 }
 
 main {
   height: calc(100% - #{$footerHeight});
-  padding-top: 60px;
-  background-color: #F4F2EE !important;
+  padding-top: 80px;
+  background-color: #FFF !important;
 }
 
 .footer-height {
@@ -20,10 +19,6 @@ main {
 
 .main-content {
   flex: 1; /* This makes sure the main content takes the remaining space between the navbar and footer */
-}
-
-.header{
-  max-width: 100%;
 }
 
 .nav-item{
@@ -79,7 +74,7 @@ footer {
 
 .navbar .nav-link,
 .navbar .navbar-text {
-  color: black;
+  color: #0073B1;
   display: flex;
   align-items: center;
 }
@@ -92,6 +87,14 @@ footer {
   font-weight: bold;
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
+}
+
+.verticai-divider {
+  display: inline-block;
+  width: 2px; /* Thickness of the line */
+  height: 24px; /* Height of the line, adjust as needed */
+  background-color: #0073B1; /* Color of the line */
+  margin: 0 16px; /* Space between the icons and the line */
 }
 
 /* Hide scrollbar for input[type=number] in WebKit browsers (Chrome, Safari, etc.) */
@@ -134,11 +137,12 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .nav-link i {
-  font-size: 22px; 
+  font-size: 24px; 
 }
 
 
 .header-shadow {
+  border-bottom: 3px solid #0073B1;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for the header */
 }
 

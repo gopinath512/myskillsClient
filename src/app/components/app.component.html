@@ -5,7 +5,7 @@
     <div class="container d-flex justify-content-between header">
       <!-- Brand/Logo -->
       <a class="navbar-brand" routerLink="/">
-        <img src="assets/images/logo-MyLearn.png" class="d-inline-block align-top" alt="logo">
+        <img src="assets/images/new-logo.png" class="d-inline-block align-top" alt="logo">
       </a>
 
       <!-- Toggle button for mobile view -->
@@ -32,17 +32,38 @@
         <div class="d-flex">
 
         <!-- Notifications -->
-        <a class="nav-link user-name px-1 d-flex align-items-center position-relative" [popover]="popTemplate" (onHidden)="markNotificationsAsRead()"
-           placement="bottom" [popoverTitle]="notificationsTitle" href="javascript:;" triggers="focus" containerClass="notifications-popup">
+        <a class="nav-link user-name d-flex align-items-center position-relative">
+          <i class="bi bi-person-circle me-1 icon-large"></i> 
+          {{ userName }}
+        </a>
+        
+        <span class="verticai-divider"></span>
+
+        <a class="nav-link user-name d-flex align-items-center position-relative" [popover]="popTemplate" 
+           (onHidden)="markNotificationsAsRead()" placement="bottom" [popoverTitle]="notificationsTitle" 
+           href="javascript:;" triggers="focus" containerClass="notifications-popup" >
           <i class="bi bi-bell me-1 icon-large"></i> <!-- Bootstrap Notification Icon -->
           <span *ngIf="newNotificationCount > 0" class="badge notification-badge">{{ newNotificationCount }}</span>
-        </a>
+        </a>        
+        
         <ng-template #popTemplate>
           <app-notifications-viewer [isViewOnly]="true"></app-notifications-viewer>
         </ng-template>
 
+        <span class="verticai-divider"></span>
+        
+        <a class="nav-link d-flex align-items-center position-relative" routerLink="/settings" title="Settings" data-bs-toggle="tooltip">
+          <i class="fa fa-cog me-1 icon-large"></i>
+        </a>
+
+        <span class="verticai-divider"></span>
+        
+        <a class="nav-link d-flex align-items-center position-relative" (click)="logout()" title="Logout" data-bs-toggle="tooltip">
+          <i class="fa fa-sign-out me-1 icon-large"></i>
+        </a>
+
         <!-- User Profile and Settings -->
-        <ul class="navbar-nav ms-auto">
+        <!-- <ul class="navbar-nav ms-auto">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
               <i class="bi bi-person-circle me-1 icon-large"></i> 
@@ -66,7 +87,7 @@
               </li>
             </ul>
           </li>
-        </ul>
+        </ul> -->
       </div>
 
       </div>
@@ -74,7 +95,7 @@
       <div *ngIf="!isUserLoggedIn" class="collapse navbar-collapse menuItemsContainer">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/login"><i class="fa fa-sign-in icon-large"></i> Sign In</a>
+            <a class="nav-link" routerLink="/login"><i class="fa fa-sign-in me-2 icon-large"></i> Sign In</a>
           </li>
         </ul>
       </div>

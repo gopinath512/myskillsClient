@@ -30,91 +30,84 @@
   </div>
 
   <!-- Quiz Content -->
-  <div *ngIf="testStarted" class="card test-taker-component">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <span>Question {{ currentQuestionIndex + 1 }}/{{ examDetails.examQuestions.length }}</span>
-      <h6>{{ examDetails.examName }}</h6>
-      <!-- Time Remaining moved before Pause button, formatted as HH:MM:SS -->
-      <span>Time Remaining: {{ formatTime(timeRemaining) }}</span>
+  <div class="exam-page">
+    <div *ngIf="testStarted" class="card test-taker-component">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Question {{ currentQuestionIndex + 1 }}/{{ examDetails.examQuestions.length }}</span>
+            <h6>{{ examDetails.examName }}</h6>
+            <span>Time Remaining: {{ formatTime(timeRemaining) }}</span>
 
-      <button class="btn btn-outline-secondary" (click)="pauseTest()" *ngIf="!isPaused">Pause</button>
-      <button class="btn btn-outline-secondary" (click)="resumeTest()" *ngIf="isPaused">Resume</button>
-
-
-    </div>
-    <div class="card-body">
-      <!-- Progress Bar -->
-      <div class="progress mb-3">
-        <div class="progress-bar" role="progressbar" [style.width]="getProgressPercentage()" aria-valuenow="{{ getProgressPercentage() }}" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-
-      <div *ngIf="examDetails.examQuestions[currentQuestionIndex] as currentQuestion">
-        <div class="mb-3 question-container">
-          <!-- CKEditor for displaying the current question with read-only and no toolbar, made resizable based on content -->
-          <ckeditor [editor]="Editor" [(ngModel)]="currentQuestion.text" [config]="editorConfig" [disabled]="true"></ckeditor>
+            <button class="btn btn-outline-secondary" (click)="pauseTest()" *ngIf="!isPaused">Pause</button>
+            <button class="btn btn-outline-secondary" (click)="resumeTest()" *ngIf="isPaused">Resume</button>
         </div>
 
-        <!--<form #quizForm="ngForm" (ngSubmit)="submitQuiz(quizForm)">
-        <div class="mb-3 option-container" [class.selected]="option.selected" *ngFor="let option of currentQuestion.options; let i = index">
-          <div class="form-check" [ngClass]="{'checkbox': currentQuestion.typeId === 1, 'radio': currentQuestion.typeId !== 1}">
-            <input class="form-check-input" type="checkbox" [(ngModel)]="option.selected" [name]="option.id" [id]="option.id" *ngIf="currentQuestion.typeId === 1">
-            <input class="form-check-input" type="radio" [(ngModel)]="option.selected" [value]="option.id" [name]="currentQuestion.id" [id]="option.id" *ngIf="currentQuestion.typeId !== 1">
-            <label class="form-check-label" [for]="option.id">-->
-        <!-- CKEditor for option text, resizable based on content -->
-        <!--<ckeditor [editor]="Editor" [data]="option.optionText" [config]="editorConfig" [disabled]="true"></ckeditor>
-              </label>
-            </div>
-          </div>
-        </form>-->
-
-        <form #quizForm="ngForm">
-          <div class="mb-3 option-container" [class.selected]="option.selected" *ngFor="let option of currentQuestion.options; let i = index">
-            <div class="form-check" [ngClass]="{'radio': currentQuestion.typeId !== 1, 'checkbox': currentQuestion.typeId === 1}">
-              <!-- Show radio button for typeId == 1 -->
-              <input class="form-check-input" type="radio" [checked]="option?.selected"
-                     [(ngModel)]="option.selected" [value]="option.id"
-                     [name]="currentQuestion.id"
-                     *ngIf="currentQuestion.typeId !== 1" (change)="onRadioSelect(currentQuestion.id, option.id)">
-
-              <!-- Show checkbox for typeId != 1 -->
-              <input class="form-check-input" type="checkbox" [(ngModel)]="option.selected" [name]="option.id" [id]="option.id" *ngIf="currentQuestion.typeId === 1">
-              <label class="form-check-label" [for]="option.id">
-                <!-- CKEditor for option text, resizable based on content -->
-                <ckeditor [editor]="Editor" [data]="option.optionText" [config]="editorConfig" [disabled]="true"></ckeditor>
-              </label>
-            </div>
-          </div>
-        </form>
-
-      </div>
-
-      <!-- Fixed Footer for Navigation Buttons -->
-      <!--<div class="fixed-footer d-flex justify-content-end mt-4">
-        <button class="btn btn-secondary me-2" (click)="previousQuestion()" *ngIf="currentQuestionIndex > 0">Back</button>
-        <button class="btn btn-primary" (click)="nextQuestion()" *ngIf="currentQuestionIndex < examDetails.examQuestions.length - 1">Next question</button>
-        <button class="btn btn-success" (click)="submitQuiz()" *ngIf="currentQuestionIndex === examDetails.examQuestions.length - 1">Submit</button>
-      </div>-->
-      <!-- Fixed Footer for Navigation Buttons -->
-      <div class="fixed-footer mt-4">
-        <div class="d-flex justify-content-end">
-          <!-- Existing navigation buttons -->
-          <!-- ms-auto class automatically pushes the button to the far right -->
-          <!--<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#questionOffcanvas" aria-controls="questionOffcanvas">
-            Open Question
-          </button>-->
-          <button type="button" class="btn btn-light" data-bs-toggle="offcanvas" data-bs-target="#questionOffcanvas">Review Answers</button>
-          <!-- Button to open the offcanvas placed to the right -->
-          <div class="ms-auto">
-            <div>
-              <button class="btn btn-secondary me-2" (click)="previousQuestion()" *ngIf="currentQuestionIndex > 0">Back</button>
-              <button class="btn btn-primary" (click)="nextQuestion()" *ngIf="currentQuestionIndex < examDetails.examQuestions.length - 1">Next question</button>
-              <button class="btn btn-success" (click)="submitQuiz()" *ngIf="currentQuestionIndex === examDetails.examQuestions.length - 1">Submit</button>
+        <div class="card-body">
+            <!-- Progress Bar -->
+            <div class="progress mb-3">
+                <div class="progress-bar" role="progressbar" [style.width]="getProgressPercentage()" aria-valuenow="{{ getProgressPercentage() }}" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
 
-          </div>
+            <div *ngIf="examDetails.examQuestions[currentQuestionIndex] as currentQuestion">
+                <div class="mb-3 question-container">
+                    <ckeditor [editor]="Editor" [(ngModel)]="currentQuestion.text" [config]="editorConfig" [disabled]="true"></ckeditor>
+                </div>
+
+                <form #quizForm="ngForm">
+                    <div class="mb-3 option-container" [class.selected]="option.selected" *ngFor="let option of currentQuestion.options; let i = index">
+                        <div class="form-check" [ngClass]="{'radio': currentQuestion.typeId !== 1, 'checkbox': currentQuestion.typeId === 1}">
+                            <input class="form-check-input" type="radio" [checked]="option?.selected" [(ngModel)]="option.selected" [value]="option.id"
+                                   [name]="currentQuestion.id" *ngIf="currentQuestion.typeId !== 1" (change)="onRadioSelect(currentQuestion.id, option.id)">
+                            <input class="form-check-input" type="checkbox" [(ngModel)]="option.selected" [name]="option.id" [id]="option.id" *ngIf="currentQuestion.typeId === 1">
+                            <label class="form-check-label" [for]="option.id">
+                                <ckeditor [editor]="Editor" [data]="option.optionText" [config]="editorConfig" [disabled]="true"></ckeditor>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="fixed-footer mt-4">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-light" data-bs-toggle="offcanvas" data-bs-target="#questionOffcanvas">Review Answers</button>
+                    <div class="ms-auto">
+                        <button class="btn btn-secondary me-2" (click)="previousQuestion()" *ngIf="currentQuestionIndex > 0">Back</button>
+                        <button class="btn btn-primary" (click)="nextQuestion()" *ngIf="currentQuestionIndex < examDetails.examQuestions.length - 1">Next question</button>
+                        <button class="btn btn-success" (click)="submitQuiz()" *ngIf="currentQuestionIndex === examDetails.examQuestions.length - 1">Submit</button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
+        <!-- Offcanvas for Review Answers (Right aligned) -->
+        <div class="offcanvas offcanvas-end show" tabindex="-1" *ngIf="examDetails && examDetails.examQuestions">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasQuestionLabel">{{examDetails?.examName}}</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div>
+                    <h6>Test Overview</h6>
+                    <p>Answered: {{answeredQuestionsCount}} / {{examDetails?.examQuestions.length}}</p>
+                    <p>Remaining: {{examDetails?.examQuestions.length - answeredQuestionsCount}}</p>
+                </div>
+                <div class="mb-3">
+                    <div><span class="dot attempted"></span> Attempted</div>
+                    <div><span class="dot unattempted"></span> Unattempted</div>
+                </div>
+        
+                <hr>
+                <div>
+                    <ul class="list-unstyled">
+                        <li *ngFor="let question of examDetails?.examQuestions; let i = index" (click)="gotoQuestion(i)" class="py-2 border-bottom">
+                            <span [ngClass]="{'btn-success': questionIsAnswered(question), 'btn-danger': !questionIsAnswered(question)}" class="btn btn-sm me-2">
+                                Q{{i + 1}}
+                            </span>
+                            Question {{i + 1}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
   </div>
 </div>
@@ -138,36 +131,7 @@
 </div>
 
 <!-- Offcanvas Component -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="questionOffcanvas" aria-labelledby="offcanvasQuestionLabel" *ngIf="examDetails && examDetails.examQuestions">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasQuestionLabel">{{examDetails?.examName}}</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div>
-      <h6>Test Overview</h6>
-      <p>Answered: {{answeredQuestionsCount}} / {{examDetails?.examQuestions.length}}</p>
-      <p>Remaining: {{examDetails?.examQuestions.length - answeredQuestionsCount}}</p>
-    </div>
-    <div class="mb-3">
-      <div><span class="dot" style="background-color: #0d6efd;"></span> Attempted</div>
-      <div><span class="dot" style="background-color: #dc3545;"></span> Unattempted</div>
-     
-    </div>
 
-    <hr>
-    <div>
-      <ul class="list-unstyled">
-        <li *ngFor="let question of examDetails?.examQuestions; let i = index" (click)="gotoQuestion(i)" class="py-2 border-bottom">
-          <span [ngClass]="{'btn-success': questionIsAnswered(question), 'btn-danger': !questionIsAnswered(question)}" class="btn btn-sm me-2">
-            Q{{i + 1}}
-          </span>
-          Question {{i + 1}}
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
 
 
 

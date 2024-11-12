@@ -96,3 +96,115 @@
 .offcanvas-body .mb-3 div {
   padding: 3px 0; /* Adjust the padding as needed */
 }
+
+/* Scope styles to the exam page */
+.exam-page {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 80%;
+}
+
+/* Card styling */
+.exam-page .card {
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+/* Right offcanvas styling */
+.exam-page .offcanvas-end {
+  width: 300px; /* Fixed width for the right panel */
+  max-width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1050; /* Ensure it's on top */
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); /* Shadow effect for right panel */
+  height: 100%; /* Ensure the offcanvas takes full height */
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Offcanvas visibility state */
+.exam-page .offcanvas-end.show {
+  transform: translateX(0); /* Show the panel */
+}
+
+.exam-page .offcanvas-end:not(.show) {
+  transform: translateX(100%); /* Hide the panel */
+}
+
+/* Adjust the left content when the offcanvas is visible */
+.exam-page .card-body {
+  transition: margin-right 0.3s ease; /* Smooth transition for margin change */
+  padding-right: 15px; /* Padding for general space */
+}
+
+.exam-page .offcanvas-end.show ~ .card-body {
+  margin-right: 300px; /* Ensure the left content moves to the left when the panel is open */
+}
+
+/* Fixed footer for navigation buttons */
+.exam-page .fixed-footer {
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  padding: 1rem;
+  z-index: 10;
+}
+
+/* Question review list styling */
+.exam-page .offcanvas-body ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.exam-page .offcanvas-body li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* Attempted/unattempted indicator dots */
+.exam-page .dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.exam-page .dot.attempted {
+  background-color: #0d6efd;
+}
+
+.exam-page .dot.unattempted {
+  background-color: #dc3545;
+}
+
+/* Option container styling */
+.exam-page .option-container {
+  margin-bottom: 1rem;
+}
+
+/* Button styling for navigation */
+.exam-page .btn {
+  border-radius: 0.25rem;
+}
+
+/* Adjustments for mobile view */
+@media (max-width: 991.98px) {
+  .exam-page .offcanvas-end {
+    width: 100%;
+    max-width: none;
+  }
+
+  .exam-page .card-body {
+    margin-right: 0; /* Reset margin on smaller screens */
+  }
+}
+
+
+
