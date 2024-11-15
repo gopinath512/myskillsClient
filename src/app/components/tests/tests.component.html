@@ -47,12 +47,12 @@
     </li>
   </ul> -->
 
-  <mat-accordion>
+  <mat-accordion [multi]="true" class="custom-accordion">
 
     <!-- Upcoming Tests Panel -->
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title>Upcoming Tests</mat-panel-title>
+        <mat-panel-title>Upcoming Tests (<span [innerText]="filteredUpcomingTests?.length"></span>)</mat-panel-title>
       </mat-expansion-panel-header>
       <div id="myTabContent" class="tab-content">
         <ngx-datatable
@@ -71,7 +71,7 @@
     <!-- In Progress Panel -->
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title>In Progress</mat-panel-title>
+        <mat-panel-title>In Progress (<span [innerText]="filteredInProgressTests?.length"></span>)</mat-panel-title>
       </mat-expansion-panel-header>
       <div id="myTabContent" class="tab-content">
         <ngx-datatable
@@ -90,7 +90,7 @@
     <!-- Completed Panel -->
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title>Completed</mat-panel-title>
+        <mat-panel-title>Completed (<span [innerText]="filteredCompletedTests?.length"></span>)</mat-panel-title>
       </mat-expansion-panel-header>
       <div id="myTabContent" class="tab-content">
         <ngx-datatable

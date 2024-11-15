@@ -55,7 +55,72 @@
   padding: 10px 20px !important;
   background-color: black;
 }
+
 mat-panel-title {
   font-weight: 400;
   font-size: 18px;
+}
+
+/* Accordion Panel */
+.custom-accordion {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.custom-accordion .mat-expansion-panel {
+  margin: 10px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+/* Default Header Styling */
+.custom-accordion .mat-expansion-panel-header {
+  background-color: #e5e5e5; /* Neutral background */
+  color: #333; /* Default text color */
+  padding: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Header Hover Effect */
+.custom-accordion .mat-expansion-panel-header:hover {
+  background-color: #1976d2; /* Blue background on hover */
+  color: #ffffff; /* White text on hover */
+}
+
+/* Header Expanded State */
+.custom-accordion .mat-expansion-panel-header.mat-expanded {
+  background-color: #1976d2; /* Blue background when expanded */
+  color: #ffffff; /* White text when expanded */
+}
+
+/* Icon Styling */
+.custom-accordion mat-icon {
+  color: inherit; /* Matches text color */
+  font-size: 24px;
+}
+
+/* Panel Content */
+.tab-content {
+  padding: 20px;
+  background-color: #fafafa; /* Light content background */
+  border-top: 1px solid #e0e0e0;
+}
+
+.ngx-datatable {
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+/* Panel Transitions */
+.custom-accordion .mat-expansion-panel-body {
+  padding: 0;
+  transition: all 0.3s ease-in-out;
 }

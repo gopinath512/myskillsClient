@@ -164,10 +164,30 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  border-bottom: 1px solid #e9ecef;
 }
 
 /* Attempted/unattempted indicator dots */
+/* Exam Name Styling */
+.exam-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1976d2; /* Matches the blue header */
+  margin: 10px 0;
+  padding: 0 10px;
+  border-left: 4px solid #1976d2; /* Visual indicator */
+}
+
+/* Button container styling */
+.d-flex.flex-wrap {
+  gap: 8px; /* Space between buttons */
+}
+
+/* Button styling */
+.question-btn {
+  width: 50px; /* Set a consistent width for all buttons */
+  text-align: center;
+}
+
 .exam-page .dot {
   height: 12px;
   width: 12px;
