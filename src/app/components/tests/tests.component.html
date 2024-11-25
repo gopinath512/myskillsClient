@@ -47,50 +47,67 @@
     </li>
   </ul> -->
 
-  <mat-tab-group >
-    <mat-tab label="Upcoming Tests">
+  <mat-accordion [multi]="true" class="custom-accordion">
+
+    <!-- Upcoming Tests Panel -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Upcoming Tests (<span [innerText]="filteredUpcomingTests?.length"></span>)</mat-panel-title>
+      </mat-expansion-panel-header>
       <div id="myTabContent" class="tab-content">
         <ngx-datatable
-                       [loadingIndicator]="loadingIndicator"
-                       class="material colored-header sm table-x table-striped table-hover"
-                       [rows]="filteredUpcomingTests"
-                       [columns]="columns"
-                       [columnMode]="'force'"
-                       [headerHeight]="50"
-                       [footerHeight]="50"
-                       [rowHeight]="'auto'">
+          [loadingIndicator]="loadingIndicator"
+          class="material colored-header sm table-x table-striped table-hover"
+          [rows]="filteredUpcomingTests"
+          [columns]="columns"
+          [columnMode]="'force'"
+          [headerHeight]="50"
+          [footerHeight]="50"
+          [rowHeight]="'auto'">
         </ngx-datatable>
-    </div>
-    </mat-tab>
-    <mat-tab label="In Progress">
-      <div id="myTabContent" class="tab-content">
-          <ngx-datatable 
-                         class="material colored-header sm table-x table-striped table-hover"
-                         [loadingIndicator]="loadingIndicator"
-                         [rows]="filteredInProgressTests"
-                         [columns]="columns"
-                         [columnMode]="'force'"
-                         [headerHeight]="50"
-                         [footerHeight]="50"
-                         [rowHeight]="'auto'">
-          </ngx-datatable>
       </div>
-    </mat-tab>
-    <mat-tab label="Completed">
+    </mat-expansion-panel>
+  
+    <!-- In Progress Panel -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>In Progress (<span [innerText]="filteredInProgressTests?.length"></span>)</mat-panel-title>
+      </mat-expansion-panel-header>
       <div id="myTabContent" class="tab-content">
-          <ngx-datatable 
-                         class="material colored-header sm table-x table-striped table-hover"
-                         [rows]="filteredCompletedTests"
-                         [loadingIndicator]="loadingIndicator"
-                         [columns]="columns"
-                         [columnMode]="'force'"
-                         [headerHeight]="50"
-                         [footerHeight]="50"
-                         [rowHeight]="'auto'">
-          </ngx-datatable>
+        <ngx-datatable
+          [loadingIndicator]="loadingIndicator"
+          class="material colored-header sm table-x table-striped table-hover"
+          [rows]="filteredInProgressTests"
+          [columns]="columns"
+          [columnMode]="'force'"
+          [headerHeight]="50"
+          [footerHeight]="50"
+          [rowHeight]="'auto'">
+        </ngx-datatable>
       </div>
-    </mat-tab>
-  </mat-tab-group>
+    </mat-expansion-panel>
+  
+    <!-- Completed Panel -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Completed (<span [innerText]="filteredCompletedTests?.length"></span>)</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div id="myTabContent" class="tab-content">
+        <ngx-datatable
+          [loadingIndicator]="loadingIndicator"
+          class="material colored-header sm table-x table-striped table-hover"
+          [rows]="filteredCompletedTests"
+          [columns]="columns"
+          [columnMode]="'force'"
+          [headerHeight]="50"
+          [footerHeight]="50"
+          [rowHeight]="'auto'">
+        </ngx-datatable>
+      </div>
+    </mat-expansion-panel>
+  
+  </mat-accordion>
+  
 
   <!-- Tab Content -->
   <!-- <div id="myTabContent" class="tab-content"> -->
