@@ -1,3 +1,232 @@
+/* Main container */
+.row-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 0;
+  border-radius: 8px;
+}
+
+.dashboard {
+  width: 100%;
+  // max-width: 1000px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+.search-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.search-bar {
+  width: 75%;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+}
+.create-btn {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  background: #0073B1;;
+}
+.delete-btn{
+  background-color: #d32536eb;
+  color: white;
+}
+.create-btn:hover {
+  background: #0056b3;
+}
+.tabs {
+  display: flex;
+  margin-bottom: 0px;
+  justify-content: center;
+}
+.tab {
+  background: white;
+  color: black;
+  padding: 12px 30px;
+  border: 2px solid black;
+  margin: 0 2px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  position: relative;
+  transition: all 0.3s ease;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.tab.active {
+  background: white;
+  color: #0073B1;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+}
+.tab-container {
+  padding: 20px;
+  border: 2px solid black;
+  background: white;
+  border-radius: 8px 8px 8px 8px;
+  margin-top: -2px;
+}
+.tab-container.active {
+  display: block;
+}
+.test-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 2px solid black;
+}
+.test-table th, .test-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+.test-table th {
+  background: #0073B1;
+  color: white;
+}
+.modal-header{
+  justify-content: space-between;
+}
+.action-btn-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.action-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: none;
+}
+.start-btn { background: #28a745; color: white; }
+.resume-btn { background: #ffc107; color: black; }
+.retry-btn { background: #dc3545; color: white; }
+.view-btn { background: #17a2b8; color: white; }
+.action-btn:hover { opacity: 0.8; }
+input[type="radio"] {
+  transform: scale(1.2);
+}
+
+/* Search Box Container */
+.search-box-container {
+  flex: 1; /* Ensures it takes available space */
+  min-width: 300px; /* Ensures a minimum size for smaller layouts */
+}
+
+.search-box {
+  width: 100%; /* Full width within its container */
+  display: block;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-box:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+  outline: none;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 15px; /* Spacing between buttons */
+  flex-wrap: wrap; /* Allow wrapping if space is insufficient */
+  justify-content: center; /* Center-align the buttons */
+}
+
+.action-button.rounded {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50% !important; /* Fully rounded buttons */
+  width: 80px; /* Circle dimensions */
+  height: 80px; /* Circle dimensions */
+  font-size: 14px; /* Adjust text size */
+  font-weight: bold; /* Make text stand out */
+  text-align: center;
+  color: white; /* Text color */
+  line-height: 1.2; /* Ensure proper spacing for multi-line text */
+  background-color: #4CAF50; /* Button background color */
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow for 3D effect */
+  text-transform: uppercase; /* Make text more uniform */
+  transition: all 0.3s ease; /* Smooth hover animation */
+  padding: 5px; /* Inner padding for better spacing */
+}
+
+.action-button.rounded:hover {
+  background-color: #45a049; /* Darken on hover */
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4); /* Enhance shadow on hover */
+}
+
+.action-button.rounded:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  box-shadow: none; /* Remove shadow for disabled state */
+  color: #666; /* Lighter text color for disabled state */
+}
+
+
+
+
+/* Tabs Styling */
+.custom-tab-group {
+  flex: 1 1 100%; /* Full-width tabs */
+}
+
+.custom-tab-group .mat-tab-label {
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: none;
+  color: #007bff;
+}
+
+.custom-tab-group .mat-tab-label.mat-tab-label-active {
+  color: #0056b3;
+  font-weight: bold;
+}
+
+.custom-tab-group .mat-ink-bar {
+  background-color: #0056b3;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .row-container {
+    flex-direction: column; /* Stacks items vertically on small screens */
+  }
+
+  .search-box-container,
+  .action-buttons {
+    width: 100%; /* Full width for smaller layouts */
+  }
+}
+
+
+
 .custom-modal-width {
   max-width: 70%; /* Adjust as needed */
 }
@@ -13,6 +242,11 @@
 
 .nav-link{
   color: black;
+}
+
+.modal-title{
+  font-size: 20px;
+  margin-bottom: 0;
 }
 
 ::ng-deep .mat-ink-bar {
@@ -55,72 +289,70 @@
   padding: 10px 20px !important;
   background-color: black;
 }
-
 mat-panel-title {
   font-weight: 400;
   font-size: 18px;
 }
 
-/* Accordion Panel */
-.custom-accordion {
-  width: 100%;
-  margin-top: 20px;
-}
-
-.custom-accordion .mat-expansion-panel {
-  margin: 10px 0;
+.custom-table {
+  display: grid;
+  grid-template-columns: 1fr 3fr 2fr 3fr; /* Adjust columns */
+  border: 1px solid #ddd;
   border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  width: 100%;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s;
 }
 
-/* Default Header Styling */
-.custom-accordion .mat-expansion-panel-header {
-  background-color: #e5e5e5; /* Neutral background */
-  color: #333; /* Default text color */
-  padding: 20px;
-  font-size: 16px;
+.custom-row {
+  display: contents;
+}
+
+.custom-row.header {
+  background-color: #f0f0f0;
   font-weight: bold;
+  text-align: left;
+}
+
+.custom-row:not(.header):hover {
+  background-color: #f9f9f9; /* Light hover effect */
+  cursor: pointer;
+}
+
+.custom-row.selected {
+  background-color: #e6f7ff; /* Light blue highlight for selected row */
+  border-left: 4px solid #1890ff; /* Blue border for selected row */
+}
+
+.custom-cell {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid #ddd;
-  transition: background-color 0.3s, color 0.3s;
 }
 
-/* Header Hover Effect */
-.custom-accordion .mat-expansion-panel-header:hover {
-  background-color: #1976d2; /* Blue background on hover */
-  color: #ffffff; /* White text on hover */
+.custom-cell:first-child {
+  justify-content: center;
 }
 
-/* Header Expanded State */
-.custom-accordion .mat-expansion-panel-header.mat-expanded {
-  background-color: #1976d2; /* Blue background when expanded */
-  color: #ffffff; /* White text when expanded */
+.custom-row:last-child .custom-cell {
+  border-bottom: none; /* Remove border for the last row */
 }
 
-/* Icon Styling */
-.custom-accordion mat-icon {
-  color: inherit; /* Matches text color */
-  font-size: 24px;
+input[type='radio'] {
+  cursor: pointer;
+  accent-color: #1890ff; /* Blue color for radio buttons */
 }
 
-/* Panel Content */
-.tab-content {
-  padding: 20px;
-  background-color: #fafafa; /* Light content background */
-  border-top: 1px solid #e0e0e0;
+/* Smooth transition for hover and selection */
+.custom-row {
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.ngx-datatable {
-  background: #ffffff;
-  border-radius: 8px;
+.custom-row.selected {
+  background-color: #e6f7ff; /* Highlight the selected row */
 }
 
-/* Panel Transitions */
-.custom-accordion .mat-expansion-panel-body {
-  padding: 0;
-  transition: all 0.3s ease-in-out;
-}
+
+
+

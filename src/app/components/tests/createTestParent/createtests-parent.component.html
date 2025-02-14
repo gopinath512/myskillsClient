@@ -1,0 +1,369 @@
+<div class="form-container">
+  <!-- Assign Test -->
+  <div class="container">
+    <h2>Create New Test</h2>
+    <label for="test-name">Test Name</label>
+    <input
+      type="text"
+      class="form-input"
+      id="title"
+      [(ngModel)]="testModel.title"
+      name="title"
+      #title="ngModel"
+      required
+      placeholder="Enter test name"
+    />
+    <div *ngIf="isFormSubmitted && title.errors?.required" class="error-text">
+      Test Name is required.
+    </div>
+
+    <label for="class">Select Class</label>
+    <select
+      id="class"
+      [(ngModel)]="testModel.gradeId"
+      #classSelection="ngModel"
+      name="grade"
+      (change)="onGradeChange(testModel.gradeId)"
+      required
+    >
+      <option value=0  selected>Select Class</option>
+      <option *ngFor="let grade of grades" [value]="grade.key">
+        {{ grade.value }}
+      </option>
+    </select>
+    <div *ngIf="isFormSubmitted && classSelection.invalid" class="error-text">
+      Class selection is required.
+    </div>
+
+    <label for="subject">Select Subject</label>
+    <select
+      id="subject"
+      [(ngModel)]="testModel.subjectId"
+      name="subject"
+      (change)="onSubjectChange(testModel.subjectId)"
+      #subjectSelection="ngModel"
+      required
+    >
+      <option value="" disabled selected>Select Subject</option>
+      <option *ngFor="let subject of subjects" [value]="subject.key">
+        {{ subject.value }}
+      </option>
+    </select>
+    <div *ngIf="isFormSubmitted && subjectSelection.invalid" class="error-text">
+      Subject selection is required.
+    </div>
+
+    <label>Select Difficulty Level</label>
+    <div class="difficulty-level">
+      <button
+        [class.active]="difficultyLevel === 'Beginner'"
+        (click)="difficultyLevel = 'Beginner'"
+      >
+        Beginner
+      </button>
+      <button
+        [class.active]="difficultyLevel === 'Intermediate'"
+        (click)="difficultyLevel = 'Intermediate'"
+      >
+        Intermediate
+      </button>
+      <button
+        [class.active]="difficultyLevel === 'Master'"
+        (click)="difficultyLevel = 'Master'"
+      >
+        Master
+      </button>
+    </div>
+
+    <label>Select Test Type</label>
+    <div class="test-type">
+      <button
+        [class.active]="testType === 'Quick'"
+        (click)="testType = 'Quick'"
+      >
+        Quick
+      </button>
+      <button
+        [class.active]="testType === 'Standard'"
+        (click)="testType = 'Standard'"
+      >
+        Standard
+      </button>
+      <button
+        [class.active]="testType === 'Comprehensive'"
+        (click)="testType = 'Comprehensive'"
+      >
+        Comprehensive
+      </button>
+    </div>
+
+    <label for="students">Add Student</label>
+    <!-- <div class="dropdown">
+      <ng-select
+        [items]="unassignedStudentsOptions"
+        bindLabel="value"
+        bindValue="key"
+        placeholder="Select Students"
+        [(ngModel)]="assignedStudents"
+        name="students"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [clearable]="true"
+        #studentSelection="ngModel"
+        required
+        class="form-input ng-select-align"
+      >
+      </ng-select>
+      <div
+        *ngIf="isFormSubmitted && studentSelection.invalid"
+        class="error-text"
+      >
+        At least one student must be selected.
+      </div> -->
+      <select
+      id="class"
+      [(ngModel)]="assignedStudents"
+      #classSelection="ngModel"
+      name="students"
+      required
+    >
+      <option value="" selected>Select Student</option>
+      <option *ngFor="let student of unassignedStudentsOptions" [value]="student.key">
+        {{ student.value }}x
+    </select>
+    <div *ngIf="isFormSubmitted && classSelection.invalid" class="error-text">
+      Student selection is required.
+    </div>
+    
+
+    <div class="topic-view-section">
+      <h3>Question Allocation</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Topic Name</th>
+            <th>Easy</th>
+            <th>Medium</th>
+            <th>Difficult</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="masked">Algebra</td>
+            <td class="masked">10</td>
+            <td class="masked">4</td>
+            <td class="masked">2</td>
+          </tr>
+          <tr>
+            <td class="masked">Geometry</td>
+            <td class="masked">8</td>
+            <td class="masked">5</td>
+            <td class="masked">3</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="action-buttons">
+        <i class="fas fa-eye" (click)="handleModal('show')"></i>
+      </div>
+    </div>
+    <!-- Publish Test Section -->
+    <!-- <div class="checkbox-group mb-4">
+      <input
+        class="checkbox-input"
+        type="checkbox"
+        id="isActive"
+        [(ngModel)]="testModel.isPublished"
+        name="isPublished"
+      />
+      <label class="checkbox-label" for="isActive">Publish Test</label>
+    </div> -->
+    <div class="submit-section">
+      <button (click)="finishFunction()">
+        {{ isEditMode ? "Update Test" : "Create Test" }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Publish Test Section -->
+  <!-- <div class="checkbox-group mb-4 text-center">
+      <input 
+        class="checkbox-input me-2" 
+        type="checkbox" 
+        id="isActive" 
+        [(ngModel)]="testModel.isPublished" 
+        name="isPublished">
+      <label class="checkbox-label" for="isActive">Publish Test</label>
+    </div> -->
+
+  <!-- Success Message -->
+  <!-- <div class="success-message text-center mb-4">
+      <i data-feather="check-circle" class="success-icon mb-3"></i>
+      <h4>Test Created Successfully!</h4>
+      <p>You can now assign the test to students or edit it.</p>
+    </div> -->
+
+  <!-- Action Buttons -->
+  <!-- <div class="action-buttons d-flex justify-content-between">
+      <button class="btn btn-secondary">Back</button>
+      <button 
+        class="btn btn-primary" 
+        type="button" 
+        (click)="finishFunction()">
+        {{isEditMode ? 'Update Test' : 'Create Test'}}
+      </button>
+    </div> -->
+</div>
+
+<!-- Add Topics Section -->
+
+<!-- Modal for test create -->
+<div
+*ngIf="showModal"
+bsModal
+#myModal="bs-modal"
+class="modal fade show d-block"
+tabindex="-1"
+role="dialog"
+aria-labelledby="modalLabel"
+aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header bg-gradient-primary text-white rounded-top-4">
+        <h3 class="modal-title fw-bold text-uppercase" id="modalLabel">
+          Assign Questions
+        </h3>
+        <button
+          type="button"
+          class="btn-close text-white"
+          aria-label="Close"
+          (click)="handleModal('hide')"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <h4 class="fw-bold text-muted" style="font-size: 1.5rem">
+            🌟 Choose Questions for Each Topic 🌟
+          </h4>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle text-center">
+            <thead class="bg-primary text-white rounded">
+              <tr>
+                <th class="py-3" style="font-size: 1.3rem">Topic</th>
+                <th class="py-3" style="font-size: 1.2rem">Easy</th>
+                <th class="py-3" style="font-size: 1.2rem">Medium</th>
+                <th class="py-3" style="font-size: 1.2rem">Difficult</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let topic of selectTopics">
+                <td
+                  class="fw-bold text-secondary fs-5"
+                  style="font-size: 1.4rem"
+                >
+                  {{ topic.topicDescription }}
+                </td>
+                <td>
+                  <div
+                    class="input-control d-flex align-items-center justify-content-center"
+                  >
+                    <button
+                      class="btn btn-circle bg-soft-green"
+                      (click)="adjustQuestionCount(topic, 'easy', -1)"
+                    >
+                      <span class="material-icons">remove</span>
+                    </button>
+                    <span
+                      class="question-count mx-3 px-3 py-1 rounded bg-light text-dark"
+                    >
+                      {{ topic.easy }}
+                    </span>
+                    <button
+                      class="btn btn-circle bg-soft-green"
+                      (click)="adjustQuestionCount(topic, 'easy', 1)"
+                    >
+                      <span class="material-icons">add</span>
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div
+                    class="input-control d-flex align-items-center justify-content-center"
+                  >
+                    <button
+                      class="btn btn-circle bg-soft-yellow"
+                      (click)="adjustQuestionCount(topic, 'medium', -1)"
+                    >
+                      <span class="material-icons">remove</span>
+                    </button>
+                    <span
+                      class="question-count mx-3 px-3 py-1 rounded bg-light text-dark"
+                    >
+                      {{ topic.medium }}
+                    </span>
+                    <button
+                      class="btn btn-circle bg-soft-yellow"
+                      (click)="adjustQuestionCount(topic, 'medium', 1)"
+                    >
+                      <span class="material-icons">add</span>
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div
+                    class="input-control d-flex align-items-center justify-content-center"
+                  >
+                    <button
+                      class="btn btn-circle bg-soft-red"
+                      (click)="adjustQuestionCount(topic, 'hard', -1)"
+                    >
+                      <span class="material-icons">remove</span>
+                    </button>
+                    <span
+                      class="question-count mx-3 px-3 py-1 rounded bg-light text-dark"
+                    >
+                      {{ topic.hard }}
+                    </span>
+                    <button
+                      class="btn btn-circle bg-soft-red"
+                      (click)="adjustQuestionCount(topic, 'hard', 1)"
+                    >
+                      <span class="material-icons">add</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-4 text-end">
+          <h4 class="fw-bold text-muted" style="font-size: 1.3rem">
+            Total Questions Assigned:
+            <span class="text-primary fs-4">{{ selectTopics?.length }}</span>
+          </h4>
+        </div>
+      </div>
+
+      <div class="modal-footer bg-light rounded-bottom-4">
+        <button
+          type="button"
+          class="btn btn-secondary btn-lg"
+          (click)="handleModal('hide')"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-success btn-lg px-4"
+          (click)="assignQuestions()"
+        >
+          🌟 Assign Questions 🌟
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

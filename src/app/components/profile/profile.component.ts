@@ -1,11 +1,6 @@
-// =============================
-// Email: info@ebenmonney.com
-// www.ebenmonney.com/templates
-// =============================
+import { Component, NgZone, OnInit, ViewChild, Input, TemplateRef } from '@angular/core';
 
-import { Component, NgZone, OnInit, ViewChild, Input } from '@angular/core';
-
-import { AlertService, MessageSeverity } from '../../services/alert.service';
+import { AlertService, MessageSeverity, DialogType } from '../../services/alert.service';
 import { AccountService } from '../../services/account.service';
 import { Utilities } from '../../services/utilities';
 import { LocalStoreManager } from '../../services/local-store-manager.service';
@@ -17,14 +12,16 @@ import { Permission } from '../../models/permission.model';
 import { ReferenceDataViewModel } from '../../models/ReferenceModel/reference.model';
 import { ReferenceDataService } from '../../services/Reference/reference-data.service';
 import { UserType } from '../../models/enums';
-
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { UserInfoComponent } from '../controls/user-info.component';
 
 @Component({
-  selector: 'app-user-info',
-  templateUrl: './user-info.component.html',
-  styleUrls: ['./user-info.component.scss']
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
 })
-export class UserInfoComponent implements OnInit {
+
+export class ProfileComponent implements OnInit {
 
   public isEditMode = false;
   public isNewUser = false;
@@ -38,14 +35,36 @@ export class UserInfoComponent implements OnInit {
   public emailConfirmed: boolean;
   public user: User = new User();
   public userEdit: UserEdit;
-  public allRoles: Role[] = [];
-  grades: ReferenceDataViewModel[] = [];
-
   public formResetToggle = true;
-
   public changesSavedCallback: () => void;
   public changesFailedCallback: () => void;
   public changesCancelledCallback: () => void;
+
+  public allRoles: Role[] = [];
+  grades: ReferenceDataViewModel[] = [];
+  columns: any[] = [];
+  rows: User[] = [];
+  rowsCache: User[] = [];
+  editedUser: UserEdit;
+  sourceUser: UserEdit;
+  editingUserName: { name: string };
+  loadingIndicator: boolean;
+
+  @ViewChild('indexTemplate', { static: true })
+  indexTemplate: TemplateRef<any>;
+
+  @ViewChild('userNameTemplate', { static: true })
+  userNameTemplate: TemplateRef<any>;
+
+  @ViewChild('rolesTemplate', { static: true })
+  rolesTemplate: TemplateRef<any>;
+
+  @ViewChild('actionsTemplate', { static: true })
+  actionsTemplate: TemplateRef<any>;
+
+  @ViewChild('editorModal', { static: true })
+  editorModal: ModalDirective;
+
 
   @Input()
   isViewOnly: boolean;
@@ -81,6 +100,8 @@ export class UserInfoComponent implements OnInit {
   @ViewChild('roles')
   public roles;
 
+  @ViewChild('userEditor', { static: true })
+  userEditor: UserInfoComponent;
 
   constructor(private ngZone: NgZone, private alertService: AlertService, private accountService: AccountService, private localStorage: LocalStoreManager, private referenceDataService: ReferenceDataService) {
   }
@@ -90,8 +111,22 @@ export class UserInfoComponent implements OnInit {
     if (!this.isGeneralEditor) {
       this.loadCurrentUserData();
     }
+    this.loadData();
   }
 
+  ngAfterViewInit() {
+
+    this.userEditor.changesSavedCallback = () => {
+      this.addNewUserToList();
+      this.editorModal.hide();
+    };
+
+    this.userEditor.changesCancelledCallback = () => {
+      this.editedUser = null;
+      this.sourceUser = null;
+      this.editorModal.hide();
+    };
+  }
   canSeeGrade() {
     // Use optional chaining to safely access userType and default to a fallback value if undefined
     const userType = this.user?.userType ?? null;
@@ -112,6 +147,7 @@ export class UserInfoComponent implements OnInit {
     this.referenceDataService.getGrades()
       .subscribe(grades => {
         this.grades = grades;
+        console.log(this.grades,'grades')
         // You can now work with the 'grades' array in your component
       });
   }
@@ -196,10 +232,6 @@ export class UserInfoComponent implements OnInit {
     return this.allRoles.find((r) => r.name === name);
   }
 
-  isParent(){
-    return this.user.jobTitle !== 'Parent'
-  }
-
 
 
   showErrorAlert(caption: string, message: string) {
@@ -229,22 +261,60 @@ export class UserInfoComponent implements OnInit {
       this.isEditingSelf = this.accountService.currentUser ? this.userEdit.id === this.accountService.currentUser.id : false;
     }
 
-    this.isEditMode = true;
-    this.showValidationErrors = true;
-    this.isChangePassword = false;
+    // this.isEditMode = true;
+    // this.showValidationErrors = true;
+    // this.isChangePassword = false;
+    console.log(this.userEdit,'this.userEdit')
+    this.editingUserName = { name: this.userEdit.userName };
+    this.sourceUser = this.userEdit;
+    console.log(this.userEditor,this.userEdit, this.allRoles,this.editorModal,'this.userEditor')
+    this.editedUser = this.userEditor.editUser(this.userEdit, this.allRoles);
+    this.editorModal.show();
   }
 
-
+   triggerFileInput(key) {
+    if(key==="parent"){
+      document.getElementById('upload-parent-image').click();
+    }else{
+      document.getElementById('upload-child-image').click();
+    }
+  }
+  
+   previewImage(event,key,childData?) {
+    const input = event.target;
+    const file = input.files[0];
+    this.userEdit = new UserEdit();
+    Object.assign(this.userEdit, this.user);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const profileImage = e.target.result;
+        if(key === "parent"){
+          this.userEdit['profileImage'] = profileImage; 
+        }else if(key === "child"){
+          let tempChildData = this.rows;
+          tempChildData.forEach((child, index) => {
+            if(child.id === childData.id){
+              child['profileImage'] = profileImage;
+            }
+          })
+          this.rows = tempChildData;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
   save() {
     this.isSaving = true;
     this.alertService.startLoadingMessage('Saving changes...');
-    console.log(this.userEdit,this.user,'userEdit')
+
     if (this.isNewUser) {
       if (this.isParentuser) {
         this.user.roles = []
 
         this.user.roles.push('learner');
-      } 
+      } else { delete this.user.gradeId; }
       this.accountService.newUser(this.userEdit).subscribe(user => this.saveSuccessHelper(user), error => this.saveFailedHelper(error));
     } else {
       if (this.isParentuser) {
@@ -475,6 +545,153 @@ export class UserInfoComponent implements OnInit {
     return `verification_email_sent:${userId}`;
   }
 
+  addNewUserToList() {
+    if (this.sourceUser) {
+      Object.assign(this.sourceUser, this.editedUser);
+
+      let sourceIndex = this.rowsCache.indexOf(this.sourceUser, 0);
+      if (sourceIndex > -1) {
+        Utilities.moveArrayItem(this.rowsCache, sourceIndex, 0);
+      }
+
+      sourceIndex = this.rows.indexOf(this.sourceUser, 0);
+      if (sourceIndex > -1) {
+        Utilities.moveArrayItem(this.rows, sourceIndex, 0);
+      }
+
+      this.editedUser = null;
+      this.sourceUser = null;
+    } else {
+      const user = new User();
+      Object.assign(user, this.editedUser);
+      this.editedUser = null;
+
+      let maxIndex = 0;
+      for (const u of this.rowsCache) {
+        if ((u as any).index > maxIndex) {
+          maxIndex = (u as any).index;
+        }
+      }
+
+      (user as any).index = maxIndex + 1;
+
+      this.rowsCache.splice(0, 0, user);
+      this.rows.splice(0, 0, user);
+      this.rows = [...this.rows];
+    }
+  }
+
+
+  loadData() {
+    this.alertService.startLoadingMessage();
+    this.loadingIndicator = true;
+
+    if (this.canViewRoles) {
+      this.accountService.getUsersAndRoles().subscribe(results => this.onDataLoadSuccessful(results[0], results[1]), error => this.onDataLoadFailed(error));
+    } else {
+      this.accountService.getUsers().subscribe(users => this.onDataLoadSuccessful(users, this.accountService.currentUser.roles.map(x => new Role(x))), error => this.onDataLoadFailed(error));
+    }
+  }
+
+  mapGrade(user){
+    let gradeName = "";
+    this.grades?.map((grade)=>{
+      if(grade?.key === user?.gradeId){
+        gradeName= grade?.value
+      }
+    })
+    return gradeName;
+  }
+
+  onDataLoadSuccessful(users: User[], roles: Role[]) {
+    this.alertService.stopLoadingMessage();
+    this.loadingIndicator = false;
+
+    users.forEach((user, index) => {
+      (user as any).index = index + 1;
+    });
+
+    users?.forEach((user:any)=>{
+      user['grade'] = this.mapGrade(user);
+    })
+    this.rowsCache = [...users];
+    this.rows = users;
+    this.allRoles = roles;
+  }
+
+
+  onDataLoadFailed(error: any) {
+    this.alertService.stopLoadingMessage();
+    this.loadingIndicator = false;
+
+    this.alertService.showStickyMessage('Load Error', `Unable to retrieve users from the server.\r\nErrors: "${Utilities.getHttpResponseMessages(error)}"`,
+      MessageSeverity.error, error);
+  }
+
+
+  onSearchChanged(value: string) {
+    this.rows = this.rowsCache.filter(r => Utilities.searchArray(value, false, r.userName, r.fullName, r.email, r.phoneNumber, r.jobTitle, r.roles));
+  }
+
+  onEditorModalHidden() {
+    this.editingUserName = null;
+    this.userEditor.resetForm(true);
+  }
+
+
+  newChildUser() {
+    this.editingUserName = null;
+    this.sourceUser = null;
+    this.editedUser = this.userEditor.newUser(this.allRoles);
+    this.editorModal.show();
+  }
+
+
+  editChildUser(row: UserEdit) {
+    this.editingUserName = { name: row.userName };
+    this.sourceUser = row;
+    console.log(this.userEditor,row, this.allRoles,this.editorModal,'this.userEditor')
+    this.editedUser = this.userEditor.editUser(row, this.allRoles);
+    this.editorModal.show();
+  }
+
+
+  deleteUser(row: UserEdit) {
+    this.alertService.showDialog('Are you sure you want to delete \"' + row.userName + '\"?', DialogType.confirm, () => this.deleteUserHelper(row));
+  }
+
+
+  deleteUserHelper(row: UserEdit) {
+
+    this.alertService.startLoadingMessage('Deleting...');
+    this.loadingIndicator = true;
+
+    this.accountService.deleteUser(row)
+      .subscribe(results => {
+        this.alertService.stopLoadingMessage();
+        this.loadingIndicator = false;
+
+        this.rowsCache = this.rowsCache.filter(item => item !== row);
+        this.rows = this.rows.filter(item => item !== row);
+      },
+        error => {
+          this.alertService.stopLoadingMessage();
+          this.loadingIndicator = false;
+
+          this.alertService.showStickyMessage('Delete Error', `An error occured whilst deleting the user.\r\nError: "${Utilities.getHttpResponseMessages(error)}"`,
+            MessageSeverity.error, error);
+        });
+  }
+
+
+
+  get canViewRoles() {
+    return this.accountService.userHasPermission(Permission.viewRolesPermission);
+  }
+
+  get canManageUsers() {
+    return this.accountService.userHasPermission(Permission.manageUsersPermission);
+  }
 
   get canViewAllRoles() {
     return this.accountService.userHasPermission(Permission.viewRolesPermission);

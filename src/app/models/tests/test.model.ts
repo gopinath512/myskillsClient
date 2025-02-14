@@ -39,6 +39,7 @@ export class TestViewModel {
   title: string;
   description: string;
   subjectId: number;
+  testType: string;
   grade?: string; // Now nullable, indicating it's optional
   gradeId: number;
   subject?: string; // Also optional

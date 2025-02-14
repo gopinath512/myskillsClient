@@ -1,6 +1,3 @@
-<!--<header class="pageHeader">
-  <h3><i class="fa fa-tachometer fa-lg page-caption" aria-hidden="true"></i>Family Learning Dashboard</h3>
-</header>-->
 <div >
   <div #widgetsContainer cdkDropList (cdkDropListDropped)="drop($event)" class="row">
     <div *ngIf="!configurations.showDashboardStatistics && !configurations.showDashboardNotifications &&
@@ -14,94 +11,13 @@
       </div>
     </div>
 
+    <h1 [innerText]="rows.length"></h1>
 
     <app-test-overall-report></app-test-overall-report>
 
     <app-recent-activities></app-recent-activities>
     
     <app-child-overview></app-child-overview>
-    <!--<app-test-inprogress-report></app-test-inprogress-report>-->
-    <!--<div class="col-12 mb-4 widget-container px-0">
-
-      <div class="card card-body">
-        <h5 class="text-muted d-inline-block">Children</h5>
-        <div *cdkDragPlaceholder [ngStyle]="{'min-height.px': dashboardStatistics.offsetHeight }" class="widget-container-placeholder mb-4"></div>
-
-        <div class="row control-box">
-          <div class="col-lg-8">
-            <div class="search-box">
-              <app-search-box (searchChange)="onSearchChanged($event)" placeholder="{{'users.management.Search' | translate}}"></app-search-box>
-            </div>
-          </div>
-          <div class="col-lg-4 pe-lg-5">
-            <ul class="nav flex-column flex-lg-row justify-content-end">
-              <li *ngIf="canManageUsers && canAssignRoles" class="nav-item toolbaritem">
-                <a class="nav-link" href="javascript:;" (click)="newUser()">
-                  <i class="fa fa-plus-circle"></i> {{'users.management.NewUser' | translate}}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <ngx-datatable class="material colored-header sm table-x table-striped table-hover"
-                       [loadingIndicator]="loadingIndicator"
-                       [rows]="rows"
-                       [rowHeight]="35"
-                       [headerHeight]="37"
-                       [footerHeight]="35"
-                       [columns]="columns"
-                       [pagination]="true"
-                       [scrollbarV]="false"
-                       [limit]="5"
-                       [columnMode]="'force'">
-
-        </ngx-datatable>
-
-        <ng-template #userNameTemplate let-value="value" let-row="row">
-          <a [routerLink]="['/learner', row.id]">{{ value }}</a>
-        </ng-template>
-
-        <ng-template #indexTemplate let-value="value">
-          <strong>{{value}}</strong>
-        </ng-template>
-
-        <ng-template #userNameTemplate let-row="row" let-value="value">
-          <span [class.locked-out]="row.isLockedOut" [class.user-disabled]="!row.isEnabled">
-            <i *ngIf="row.isLockedOut" class="fa fa-exclamation-triangle"> </i>
-            <i *ngIf="!row.isEnabled" class="fa fa-exclamation"> </i>
-            {{value}}
-          </span>
-        </ng-template>-->
-
-        <!--<ng-template #rolesTemplate let-row="row" let-value="value" let-i="index">
-        <span class="user-role badge rounded-pill bg-secondary" *ngFor="let role of value">{{role}}</span>
-      </ng-template>-->
-
-        <!--<ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
-          <div *ngIf="canManageUsers">
-            <a class="btn btn-link text-link btn-sm" href="javascript:;" (click)="editUser(row)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {{'users.management.Edit' | translate}}</a>|
-            <a class="btn btn-link text-link btn-sm" href="javascript:;" (click)="deleteUser(row)"><i class="fa fa-trash-o" aria-hidden="true"></i> {{'users.management.Delete' | translate}}</a>
-          </div>
-        </ng-template>
-
-
-        <div class="modal fade" bsModal #editorModal="bs-modal" (onHidden)="onEditorModalHidden()" [config]="{backdrop: 'static'}" tabindex="-1">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 *ngIf="!editingUserName" class="modal-title float-start"><i class="fa fa-user-plus"></i> {{'users.management.NewUser' | translate}}</h4>
-                <h4 *ngIf="editingUserName" class="modal-title float-start"><i class="fa fa-user-circle-o"></i> {{'users.management.EditUser' | translate:editingUserName}}</h4>
-                <button type="button" class="btn-close float-end fs-sm" title="Close" (click)="editorModal.hide()"></button>
-              </div>
-              <div class="modal-body">
-                <app-user-info #userEditor [isGeneralEditor]="true" [isParentuser]="true"></app-user-info>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>-->
 
     <div class="col-12 mb-4 widget-container px-0">
       <div class="card card-body bg-light">
@@ -110,12 +26,6 @@
         <app-test-statistics></app-test-statistics>
       </div>
     </div>
-
-
-
-
-
-
   </div>
 </div>
 

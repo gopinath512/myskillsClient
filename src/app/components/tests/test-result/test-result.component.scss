@@ -2,3 +2,159 @@
   overflow-y: auto;*/ /* Enable vertical scrolling if content is taller than the container */
   /*max-height: 90vh;*/ /* Adjust the max height as needed, vh units ensure it's based on the viewport height */
 /*}*/
+
+/* General styling for the accordion */
+.accordion-header {
+  margin-bottom: 0;
+}
+
+.accordion-item {
+  margin-bottom: 15px; /* Spacing between accordion items */
+  border-radius: 8px; /* Rounded corners for items */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow effect */
+}
+
+.accordion-button {
+  font-size: 16px;
+  font-weight: 500; /* Make the question text slightly bold */
+  padding: 10px 20px;
+  border-radius: 8px; /* Rounded corners for the button */
+  background-color: #f8f9fa;
+  color: #495057;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover effect for accordion buttons */
+.accordion-button:hover {
+  background-color: #e9ecef;
+}
+
+/* Styles for correct/incorrect status */
+.text-success {
+  color: #28a745;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+
+/* Styling for question text */
+.question-text {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Styling for options */
+.list-group-item {
+  font-size: 14px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: #f1f1f1;
+  transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover {
+  background-color: #e2e6ea;
+}
+
+.custom-control-label {
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.custom-control-input:disabled {
+  cursor: not-allowed;
+}
+
+/* Optional: Button to toggle all accordions */
+.btn-primary {
+  font-size: 14px;
+  padding: 6px 12px;
+  background-color: #007bff;
+  border-color: #007bff;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Accordion Body Styles */
+.accordion-body {
+  padding: 15px 20px; /* Increased padding for more spacing */
+  background-color: #f8f9fa; /* Light background color for the body */
+  border-radius: 8px; /* Rounded corners for the accordion body */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* Light shadow for a subtle effect */
+}
+
+/* Styling for question text */
+.question-text {
+  font-size: 16px;
+  font-weight: bold; /* Make the question text bold */
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 15px; /* Extra spacing below the question text */
+}
+
+/* Styling for list items (options) */
+/* List Group Item (each option) */
+.list-group-item {
+  font-size: 14px;  /* Adjust font size */
+  padding: 12px 15px;  /* Add padding for better spacing */
+  border-radius: 6px;  /* Rounded corners for the options */
+  background-color: #ffffff;
+  margin-bottom: 8px;  /* Space between options */
+  display: flex;
+  justify-content: space-between; /* Ensure content is spaced evenly */
+  align-items: center; /* Align items vertically */
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for list items */
+.list-group-item:hover {
+  background-color: #f1f1f1; /* Light gray background on hover */
+}
+
+/* Ensure correct alignment for checkboxes and labels */
+.form-check-input {
+  margin-top: 0.15rem;  /* Adjust top margin to align the checkbox better with label */
+  margin-right: 10px;   /* Adds space between checkbox and label */
+}
+
+.form-check-label {
+  font-size: 14px;  /* Ensure label has a readable font size */
+  color: #495057;   /* Set label text color */
+  margin-bottom: 0;  /* Remove bottom margin to avoid misalignment */
+}
+
+/* Checkbox and Label Styling */
+.custom-control-input {
+  margin-right: 10px; /* Adjust margin between checkbox and label */
+}
+
+.text-muted {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Styling for custom checkboxes */
+.custom-control-label {
+  font-size: 14px;
+  color: #495057;
+  margin-left: 10px;
+}
+
+/* Correct/Incorrect Text */
+.text-success {
+  color: #28a745;
+}
+
+.text-muted {
+  color: #6c757d;
+}
+
+.custom-control-input:disabled {
+  cursor: not-allowed; /* Make checkbox unclickable */
+}

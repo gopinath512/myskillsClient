@@ -187,6 +187,7 @@ export class UsersManagementComponent implements OnInit, AfterViewInit {
   editUser(row: UserEdit) {
     this.editingUserName = { name: row.userName };
     this.sourceUser = row;
+    console.log(this.userEditor,'this.userEditor')
     this.editedUser = this.userEditor.editUser(row, this.allRoles);
     this.editorModal.show();
   }
