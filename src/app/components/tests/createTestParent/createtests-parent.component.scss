@@ -1,0 +1,211 @@
+/* General Form Styling */
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 80px;
+}
+h2 {
+  text-align: center;
+  color: #333;
+}
+label {
+  font-weight: bold;
+  color: #555;
+  display: block;
+  margin-top: 10px;
+}
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.difficulty-level, .test-type {
+  display: flex;
+  justify-content: space-between;
+}
+.difficulty-level button, .test-type button {
+  flex: 1;
+  margin-right: 5px;
+  background-color: #e0e0e0;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  color: #333;
+  font-weight: bold;
+  cursor: pointer;
+}
+.difficulty-level button:last-child, .test-type button:last-child {
+  margin-right: 0;
+}
+.difficulty-level button.active, .test-type button.active {
+  background-color: rgb(0 0 0 / 60%);
+  color: #fff;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border: 1px solid #ccc;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.submit-section {
+  text-align: center;
+  margin-top: 20px;
+}
+.submit-section button {
+  background-color: #155724;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.topic-view-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  border: 2px dashed rgb(0 0 0 / 60%);
+  position: relative;
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  text-align: center;
+}
+.topic-view-section h3 {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+}
+.topic-view-section table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.topic-view-section th, .topic-view-section td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+}
+.topic-view-section th {
+  background-color: rgb(0 0 0 / 60%);
+  color: #fff;
+}
+.masked {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: transparent;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.action-buttons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.action-buttons i {
+  color: #d32f2f;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.action-buttons i:hover {
+  background-color: #f5f5f5;
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Roboto', sans-serif;
+}
+//Modal popup
+.modal-dialog.modal-lg {
+  max-width: 80%;
+}
+
+/* Larger Topic Name */
+table tbody td:first-child {
+  font-size: 1.4rem;
+}
+
+/* Improved Spacing Between + and - Buttons */
+.input-control .question-count {
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #f8f9fa;
+  display: inline-block;
+  text-align: center;
+  line-height: 2rem;
+  width: 50px;
+  height: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons Styling */
+.btn-circle {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.bg-soft-green {
+  background-color: #9cef8f;
+}
+
+.bg-soft-yellow {
+  background-color: #e6d482;
+}
+
+.bg-soft-red {
+  background-color: #fc9898;
+}
+
+.btn-circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Buttons */
+.modal-footer .btn-lg {
+  border-radius: 25px;
+  font-size: 1.2rem;
+}

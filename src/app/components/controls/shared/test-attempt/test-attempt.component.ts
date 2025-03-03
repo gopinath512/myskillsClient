@@ -92,6 +92,7 @@ export class TestAttemptComponent implements OnChanges, OnDestroy {
   @Input() testId: number;
   currentTestId: number;
   currentAttemptId: number;
+  chartOptions = this.getChartOptions();
   public customersChartOptions: any = {};
   obj = {
     primary: "#6571ff",
@@ -109,39 +110,79 @@ export class TestAttemptComponent implements OnChanges, OnDestroy {
     fontFamily: "'Roboto', Helvetica, sans-serif"
   }
 
+  isExpanded(index: number): boolean {
+    return this.expandedIndex === index;
+  }
+
+  markExpanded(index: number): void {
+    this.expandedIndex = index;
+  }
+
+  getExpandedChartOptions() {
+    return {
+      ...this.chartOptions,
+      aspectRatio: 1.5, // Adjust the size for expanded view
+    };
+  }
+
   chartHovered(e): void {
     //console.log(e);
   }
-  chartOptions = {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: {
-      legend: {
-        display: true, // Hides the legend from the chart
-      },
-      tooltip: {
-        enabled: true, // Ensures tooltips are displayed on hover
-        mode: 'nearest', // Tooltip mode when hovering
-        intersect: false, // Tooltip appears even if hovering between points
-        callbacks: {
-          label: function (tooltipItem) {
-            // Custom tooltip text
-            const datasetLabel = tooltipItem.dataset.label || '';
-            const value = tooltipItem.raw;
-            return `${datasetLabel}: ${value}`;
+
+  getChartOptions(customOptions = {}) {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            color: '#495057',
+            font: { size: 12 },
+          },
+        },
+        tooltip: {
+          enabled: true,
+          mode: 'nearest',
+          intersect: false,
+          callbacks: {
+            label: (tooltipItem) => {
+              const datasetLabel = tooltipItem.dataset.label || '';
+              const value = tooltipItem.raw;
+              return `${datasetLabel}: ${value}%`;
+            },
           },
         },
       },
-    },
-    scales: {
-      x: {
-        display: false, // Hides the X-axis
+      layout: {
+        padding: { top: 20, bottom: 10 },
       },
-      y: {
-        display: false, // Hides the Y-axis
+      scales: {
+        x: {
+          display: false,
+          grid: { drawBorder: false, display: false },
+        },
+        y: {
+          display: false,
+          grid: { drawBorder: false, display: false },
+        },
       },
-    },
-  };
+      elements: {
+        arc: {
+          borderWidth: 1,
+          borderColor: '#ffffff',
+          backgroundColor: (context) => {
+            const colors = ['#28a745', '#dc3545'];
+            return colors[context.dataIndex % colors.length];
+          },
+        },
+      },
+      ...customOptions, // Allows overriding or extending options
+    };
+  }
+  
+
 
   chartType = 'pie';
   chartLabels = ['Correct', 'Wrong', 'Skipped/Unanswered'];

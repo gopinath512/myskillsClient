@@ -33,16 +33,72 @@ export class AssignTestsComponent {
   }
 
   // Function to handle "Add All"
-  assignAll() {
-    this.assignedStudents = [...this.assignedStudents, ...this.availableStudents];
-    this.availableStudents = [];
-    this.updateAssignedStudents.emit(this.assignedStudents);
-  }
+  // assignAll() {
+  //   this.assignedStudents = [...this.assignedStudents, ...this.availableStudents];
+  //   this.availableStudents = [];
+  //   this.updateAssignedStudents.emit(this.assignedStudents);
+  // }
 
   // Function to handle "Remove All"
+  // removeAll() {
+  //   this.availableStudents = [...this.availableStudents, ...this.assignedStudents];
+  //   this.assignedStudents = [];
+  //   this.updateAssignedStudents.emit(this.assignedStudents);
+  // }
+
+  onCheckboxChange(student: any) {
+    if (student.isSelected) {
+      if (!this.assignedStudents.includes(student)) {
+        this.assignedStudents.push(student);
+      }
+    } else {
+      this.assignedStudents = this.assignedStudents.filter(s => s.id !== student.id);
+    }
+    console.log('Assigned Students:', this.assignedStudents);
+  }
+
+  toggleAssignment(student: any, isAssigning: boolean) {
+    student.isSelected = !student.isSelected;
+  
+    if (isAssigning && student.isSelected) {
+      if (!this.assignedStudents.some(s => s.id === student.id)) {
+        this.assignedStudents.push(student);
+        this.availableStudents = this.availableStudents.filter(s => s.id !== student.id);
+      }
+    } else if (!isAssigning && !student.isSelected) {
+      if (!this.availableStudents.some(s => s.id === student.id)) {
+        this.availableStudents.push(student);
+        this.assignedStudents = this.assignedStudents.filter(s => s.id !== student.id);
+      }
+    }
+  }
+  
+  assignAll() {
+    // Move all available students to the assigned list
+    this.assignedStudents = [
+      ...this.assignedStudents, 
+      ...this.availableStudents.map(student => ({ ...student, isSelected: false }))
+    ];
+  
+    // Clear the available list
+    this.availableStudents = [];
+  
+    // Emit the updated assigned students
+    this.updateAssignedStudents.emit(this.assignedStudents);
+  }
+  
+  
   removeAll() {
-    this.availableStudents = [...this.availableStudents, ...this.assignedStudents];
+    // Move all assigned students back to the available list
+    this.availableStudents = [
+      ...this.availableStudents, 
+      ...this.assignedStudents.map(student => ({ ...student, isSelected: false }))
+    ];
+  
+    // Clear the assigned list
     this.assignedStudents = [];
+  
+    // Emit the updated assigned students
     this.updateAssignedStudents.emit(this.assignedStudents);
   }
 }

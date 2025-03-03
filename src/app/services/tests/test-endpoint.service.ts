@@ -11,7 +11,7 @@ import { AuthService } from '../auth.service';
 
 export class TestEndpoint extends EndpointBase {
 
-  get createTestUrl() { return this.configurations.baseUrl + '/api/test/create'; }
+  get createTestUrl() { return this.configurations.baseUrl + '/api/test/createTest'; }
   get updateTestUrl() { return this.configurations.baseUrl + '/api/test/update'; }
   get searchTestsUrl() { return this.configurations.baseUrl + '/api/test/tests'; }
   get searchTestUrl() { return this.configurations.baseUrl + '/api/test'; }
@@ -23,6 +23,7 @@ export class TestEndpoint extends EndpointBase {
   get getQuestionsForTestTestUrl() { return this.configurations.baseUrl + '/api/test/questions'; }
   get getExamDetailsuRL() { return this.configurations.baseUrl + '/api/test/examDetails'; }
   get getTestDetailsuRL() { return this.configurations.baseUrl + '/api/test/testDetails'; }
+  get getGenerateTopics() { return this.configurations.baseUrl + '/api/test/generateTopics'; }
 
   constructor(private configurations: ConfigurationService, http: HttpClient, authService: AuthService) { super(http, authService); }
 
@@ -40,6 +41,13 @@ export class TestEndpoint extends EndpointBase {
     return this.http.put<T>(this.updateTestUrl, JSON.stringify(questionObject), this.requestHeaders).pipe<T>(
       catchError(error => {
         return this.handleError(error, () => this.updateTestEndpoint(questionObject, index));
+      }));
+  }
+
+  getTestTopics<T>(request: any): Observable<T> {
+    return this.http.post<T>(this.getGenerateTopics, JSON.stringify(request), this.requestHeaders).pipe<T>(
+      catchError(error => {
+        return this.handleError(error, () => this.getTestTopics(request));
       }));
   }
 

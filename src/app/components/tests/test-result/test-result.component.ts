@@ -14,7 +14,8 @@ export class TestResultComponent implements OnInit {
   @Input() attemptId: number;
   @Input() currentUser: string;
   resultQuestion: ResultQuestion[] = [];
-
+  // Flag to track whether all accordions are open
+  allOpen: boolean = true;
   constructor(private route: ActivatedRoute, private testResultService: TestResultService, private authService: AuthService) { }
 
   ngOnInit() {
@@ -26,6 +27,12 @@ export class TestResultComponent implements OnInit {
     //  this.loadTestResultData();
     //});
     this.loadTestResultData();
+  }
+
+  removeHtmlTags(content: string): string {
+    const div = document.createElement('div');
+    div.innerHTML = content;
+    return div.textContent || div.innerText || '';
   }
 
   loadTestResultData() {
@@ -40,4 +47,29 @@ export class TestResultComponent implements OnInit {
     }
   }
 
+
+   // Toggle all accordions
+   toggleAllAccordions(): void {
+    this.allOpen = !this.allOpen;
+    this.resultQuestion.forEach((_, index) => {
+      const element = document.getElementById(`collapse${index}`);
+      if (element) {
+        if (this.allOpen) {
+          element.classList.add('show');
+        } else {
+          element.classList.remove('show');
+        }
+      }
+    });
+  }
+
+  // Update accordion state dynamically
+  updateAccordionState(): void {
+    const openCount = this.resultQuestion.filter((_, index) => {
+      const element = document.getElementById(`collapse${index}`);
+      return element && element.classList.contains('show');
+    }).length;
+
+    this.allOpen = openCount === this.resultQuestion.length;
+  }
 }

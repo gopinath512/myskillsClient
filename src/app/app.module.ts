@@ -110,7 +110,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
-
+import { MatRadioModule } from '@angular/material/radio';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CreatetestsParentComponent } from './components/tests/createTestParent/createtests-parent.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 @NgModule({
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
@@ -145,6 +150,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     QuestionComponent,
     TestsComponent,
     CreatetestsComponent,
+    CreatetestsParentComponent,
     QuestionSearchComponent,
     AssignTestsComponent,
     ViewQuestionsComponent,
@@ -161,7 +167,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     RecentActivitiesComponent,
     PerformanceSummaryComponent,
     ChildOverviewComponent,
-    TestAttemptComponent
+    TestAttemptComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -197,7 +204,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatTabsModule,
     ReactiveFormsModule,
     MatIconModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatRadioModule,
+    MatButtonToggleModule,
+    MatCheckboxModule,
+    ImageCropperModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },

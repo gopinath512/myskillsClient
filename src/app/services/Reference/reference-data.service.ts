@@ -9,7 +9,7 @@ import { ReferenceDataViewModel } from '../../models/ReferenceModel/reference.mo
 })
 export class ReferenceDataService {
 
-  private baseUrl = '/api/ReferenceData'; // Replace with your actual API base URL
+  private baseUrl = 'https://myskillslearning.com/api/ReferenceData'; // Replace with your actual API base URL
 
   constructor(private http: HttpClient) { }
 
