@@ -4,3 +4,110 @@
   padding: 10px; /* Optional: for consistent padding */
   margin: 0; /* Remove default margins */
 }
+
+/* Styling for the overall attempt summary section */
+.attempt-summary {
+  font-family: 'Arial', sans-serif; /* Clean and professional font */
+  color: #333; /* Dark text color for readability */
+  margin-bottom: 20px; /* Bottom margin for spacing */
+}
+
+/* Styling for the attempt title */
+.attempt-title {
+  font-size: 18px; /* Set the font size */
+  font-weight: 600; /* Bold font for emphasis */
+  margin-bottom: 10px; /* Space between title and details */
+  text-transform: capitalize; /* Capitalize the status */
+}
+
+/* Styling for each attempt detail */
+.attempt-detail {
+  font-size: 14px; /* Slightly smaller font size */
+  margin: 5px 0; /* Vertical spacing between each piece of information */
+}
+
+.attempt-detail strong {
+  color: #495057; /* Slightly darker color for labels */
+}
+
+/* Optional: Add a subtle border or background to highlight each attempt */
+.attempt-summary {
+  border-left: 4px solid #28a745; /* Green border for Passed status, change dynamically if needed */
+  padding-left: 10px; /* Space between border and text */
+}
+
+.attempt-summary.failed {
+  border-left-color: #dc3545; /* Red border for failed attempts */
+}
+
+.knowledge-areas-heading {
+  font-family: 'Arial', sans-serif; /* Clean sans-serif font */
+  font-size: 18px; /* Adjust font size for better visibility */
+  font-weight: 600; /* Slightly bolder text */
+  color: #333; /* Dark color for the heading text */
+  text-transform: uppercase; /* Make the text uppercase for emphasis */
+  letter-spacing: 1px; /* Optional: add some spacing between letters */
+  margin-bottom: 15px; /* Space below the heading */
+}
+
+/* Improved font styling for the accordion button */
+.accordion-button {
+  font-family: 'Arial', sans-serif; /* Choose a professional sans-serif font */
+  font-size: 14px; /* Adjust font size for readability */
+  font-weight: 500; /* Make it slightly bolder for emphasis */
+}
+
+.accordion-button strong {
+  font-weight: 600; /* Bold the strong text */
+}
+
+/* Add custom styling for the badge for status */
+.accordion-button .badge {
+  font-size: 13px; /* Slightly reduce the font size of the badge */
+  font-weight: 600; /* Bold the badge text */
+}
+
+/* Optional: Adjust the score and date text */
+.accordion-button div {
+  font-size: 14px;
+  font-weight: 400; /* Regular weight for non-bold text */
+  color: #495057; /* Dark gray color for readability */
+}
+
+
+.accordion-item .accordion-button {
+  padding: 12px 15px;
+}
+
+.accordion-body {
+  padding: 20px;
+}
+
+.accordion-body h5,
+.accordion-body p {
+  margin: 10px 0;
+}
+
+.accordion-body .progress-bar {
+  font-size: 12px;
+}
+
+.accordion-body canvas {
+  max-width: 100%;
+  height: 300px;
+}
+
+.accordion-item .accordion-button canvas {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.accordion-body .progress-bar {
+  font-size: 12px;
+}
+
+.accordion-body button {
+  margin-top: 10px;
+}
+
+

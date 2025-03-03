@@ -43,7 +43,7 @@ export class OidcHelperService {
       .append('grant_type', 'password')
       .append('scope', this.scope);
 
-    return this.http.post<LoginResponse>(this.tokenEndpoint, params, { headers: header });
+    return this.http.post<LoginResponse>('https://myskillslearning.com/connect/token', params, { headers: header });
   }
 
   refreshLogin() {
@@ -53,7 +53,7 @@ export class OidcHelperService {
       .append('client_id', this.clientId)
       .append('grant_type', 'refresh_token');
 
-    return this.http.post<LoginResponse>(this.tokenEndpoint, params, { headers: header });
+    return this.http.post<LoginResponse>('https://myskillslearning.com/connect/token', params, { headers: header });
   }
 
   loginWithExternalToken(token: string, provider: string, email?: string, password?: string) {

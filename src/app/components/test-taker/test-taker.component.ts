@@ -27,7 +27,7 @@ export class TestTakerComponent implements OnInit {
   startTime: number;
   pausedTime: number;
   isPaused: boolean = false;
-
+  isSideNavOpen: boolean = true; 
 
   @ViewChild('submitSuccessModal', { static: true })
   submitSuccessModal: ModalDirective;
@@ -390,5 +390,9 @@ export class TestTakerComponent implements OnInit {
   finishTest(): void {
     // this.submitQuiz();
     // Logic to handle test completion
+  }
+
+  toggleSideNav() {
+    this.isSideNavOpen = !this.isSideNavOpen;
   }
 }

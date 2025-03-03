@@ -1,0 +1,46 @@
+.form-label {
+  font-weight: bold;
+  color: #007bff;
+  font-size: 0.95rem;
+}
+
+.styled-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.styled-checkbox:checked {
+  background-color: #7ed6df;
+  border-color: #007bff;
+}
+
+.student-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  transition: all 0.3s ease;
+}
+
+.student-item:hover {
+  background-color: #f0f8ff;
+  border-color: #007bff;
+}
+
+.student-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.student-list {
+  padding-left: 0.5rem;
+}
+
+.form-check-label {
+  cursor: pointer;
+}

@@ -45,7 +45,7 @@ export class TestService {
     return this.testEndpoint.filterTests<any[]>(status);
   }
 
-  saveTest(testViewModel: TestViewModel) {
+  saveTest(testViewModel) {
     return this.testEndpoint.createTestEndpoint<TestViewModel>(testViewModel);
   }
 
@@ -59,6 +59,11 @@ export class TestService {
     return this.testEndpoint.removeTestEndpoint<TestViewModel>(index);
     this.tests.splice(index, 1);
   }
+
+  generateTopics(request){
+    return this.testEndpoint.getTestTopics(request);
+  }
+
 
   saveAssignedStudents(testid: number, userToAssignTest: userToAssignTest[]) {
 

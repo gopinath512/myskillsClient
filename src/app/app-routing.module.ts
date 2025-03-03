@@ -33,6 +33,8 @@ import { TestTakerComponent } from './components/test-taker/test-taker.component
 import { TestResultComponent } from './components/tests/test-result/test-result.component';
 import { UserType } from './models/enums';
 import { QuestionGeneratorComponent } from './components/admin/question-generator/question-generator.component';
+import { CreatetestsParentComponent } from './components/tests/createTestParent/createtests-parent.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @Injectable()
@@ -76,8 +78,10 @@ const routes: Routes = [
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard], data: { title: 'Products' } },
   { path: 'orders', component: OrdersComponent, canActivate: [AuthGuard], data: { title: 'Orders' } },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], data: { title: 'Settings' } },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: { title: 'Profile' } },
   { path: 'createquestion', component: CreateQuestionComponent, canActivate: [AuthGuard], data: { title: 'Home' } },
   { path: 'createtests', component: CreatetestsComponent, canActivate: [AuthGuard], data: { title: 'Home' } },
+  { path: 'createtestsparent', component: CreatetestsParentComponent, canActivate: [AuthGuard], data: { title: 'Home' } },
   { path: 'question', component: QuestionComponent, canActivate: [AuthGuard], data: { title: 'Home' } },
   { path: 'tests', component: TestsComponent, canActivate: [AuthGuard], data: { title: 'Home' } },
   { path: 'about', component: AboutComponent, data: { title: 'About Us' } },

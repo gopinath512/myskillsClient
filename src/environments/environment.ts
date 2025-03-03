@@ -8,8 +8,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  baseUrl: null, // Change this to the address of your backend API if different from frontend address
+  production: true,
+  baseUrl: 'https://myskillslearning.com', // Change this to the address of your backend API if different from frontend address
   loginUrl: '/login',
   googleClientId: null,
   facebookClientId: null

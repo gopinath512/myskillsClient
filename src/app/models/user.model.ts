@@ -7,11 +7,12 @@ import { UserType } from "./enums";
 
 export class User {
   // Note: Using only optional constructor properties without backing store disables typescript's type checking for the type
-  constructor(id?: string, userName?: string, fullName?: string, email?: string, jobTitle?: string, phoneNumber?: string, roles?: string[], userType?: UserType) {
+  constructor(id?: string, userName?: string, fullName?: string, email?: string, jobTitle?: string, phoneNumber?: string, roles?: string[], userType?: UserType,profileImage?:any) {
 
     this.id = id;
     this.userName = userName;
     this.fullName = fullName;
+    this.profileImage = profileImage
     this.email = email;
     this.jobTitle = jobTitle;
     this.phoneNumber = phoneNumber;
@@ -42,4 +43,5 @@ export class User {
   public isLockedOut: boolean;
   public roles: string[];
   public userType?: UserType;
+  public profileImage?:any
 }

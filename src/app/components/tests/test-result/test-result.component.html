@@ -1,24 +1,50 @@
-<div class="container" *ngIf="resultQuestion && resultQuestion.length > 0">
-  <div *ngFor="let question of resultQuestion; let qIndex = index" class="card my-3">
-    <div class="card-header">
-      Question {{ question.questionNumber }} of {{ question.totalQuestions }}:
-      <span [ngClass]="{'text-success': question.isCorrectlyAnswered, 'text-danger': !question.isCorrectlyAnswered}">
-        {{ question.isCorrectlyAnswered ? 'Correct' : 'Incorrect' }}
-      </span>
-    </div>
-    <div class="card-body">
-      <p class="card-text">{{ question.questionText }}</p>
-      <ul class="list-group">
-        <li *ngFor="let option of question.options; let oIndex = index" class="list-group-item d-flex justify-content-between align-items-center">
-          <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" [id]="'option-' + qIndex + '-' + oIndex" [checked]="option.isSelected" disabled>
-            <label class="custom-control-label" [for]="'option-' + qIndex + '-' + oIndex">{{ option.text }}</label>
-          </div>
-          <span [ngClass]="{'text-success': option.isCorrect, 'text-muted': !option.isCorrect}">
-            ({{ option.isCorrect ? 'Correct' : 'Incorrect' }})
-          </span>
-        </li>
-      </ul>
+<div class="d-flex justify-content-end mb-3">
+  <a href="javascript:void(0);" (click)="toggleAllAccordions()">
+    {{ allOpen ? 'Collapse All' : 'Expand All' }}
+  </a>
+</div>
+
+<div class="accordion" id="accordionExample" *ngIf="resultQuestion && resultQuestion.length > 0">
+  <div *ngFor="let question of resultQuestion; let qIndex = index" class="accordion-item">
+    <h2 class="accordion-header" id="heading{{ qIndex }}">
+      <button class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#collapse' + qIndex"
+              aria-expanded="true"
+              [attr.aria-controls]="'collapse' + qIndex"
+              (click)="updateAccordionState()">
+        <strong>Question {{ question.questionNumber }} of {{ question.totalQuestions }}:</strong>
+        <span [ngClass]="{'text-success': question.isCorrectlyAnswered, 'text-danger': !question.isCorrectlyAnswered}" class="ms-2">
+          {{ question.isCorrectlyAnswered ? 'Correct' : 'Incorrect' }}
+        </span>
+      </button>
+    </h2>
+
+    <div [id]="'collapse' + qIndex" 
+         class="accordion-collapse collapse show" 
+         [attr.aria-labelledby]="'heading' + qIndex">
+      <div class="accordion-body">
+        <p class="question-text mb-4 font-weight-bold" [innerHTML]="question.questionText"></p>
+        <ul class="list-group">
+          <li *ngFor="let option of question.options; let oIndex = index" class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <input type="checkbox" 
+                     class="form-check-input me-2" 
+                     [id]="'option-' + qIndex + '-' + oIndex" 
+                     [checked]="option.isSelected" 
+                     disabled>
+              <label class="form-check-label" 
+                     [for]="'option-' + qIndex + '-' + oIndex">
+                {{ removeHtmlTags(option.text) }}
+              </label>
+            </div>
+            <span [ngClass]="{'text-success': option.isCorrect, 'text-muted': !option.isCorrect}">
+              ({{ option.isCorrect ? 'Correct' : 'Incorrect' }})
+            </span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

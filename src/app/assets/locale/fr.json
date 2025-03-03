@@ -231,6 +231,9 @@
       "UserDepartments": "Départements d'utilisateurs",
       "UsersManagements": "Gestion des utilisateurs",
       "RolesManagement": "Gestion des rôles"
+    },
+    "profile": {
+      "AddNewChildren": "Ajouter de nouveaux enfants"
     }
   },
   "preferences": {
@@ -292,7 +295,12 @@
       "FullName": "Nom Complet",
       "Email": "Adresse électronique",
       "Roles": "Les rôles",
-      "PhoneNumber": "Numéro de téléphone"
+      "PhoneNumber": "Numéro de téléphone",
+      "Child": "Enfant",
+      "NewChildProfile": "Nouveau profil d'enfant",
+      "EditChildProfile": "Modifier le profil de l'enfant",
+      "AddProfile": "Ajouter un profil",
+      "EditProfile": "Modifier le profil"
     },
     "editor": {
       "JobTitle": "Profession: ",

@@ -32,8 +32,7 @@ export class TestsComponent implements OnInit {
   selectedTest: TestViewModel;
   resultQuestions: ResultQuestion[] = [];
   isEditingIndex: number | null = null;
-  selectedTab: string = 'inProgress'; // Add this line
-  activeTab: TestStatusViewModel = TestStatusViewModel.InProgress;
+  // activeTab: TestStatusViewModel = TestStatusViewModel.InProgress;
 
   searchQuery: string = ''; // Add this line for search functionality
   questionModel: QuestionViewModel
@@ -46,10 +45,12 @@ export class TestsComponent implements OnInit {
   @ViewChild('testEditorModal', { static: true })
   editorModal: ModalDirective;
 
-
   testId: number | null = null;
   learnerId: string
   loadingIndicator: boolean;
+  selectedRow: any[] = []; // Holds the currently selected row
+  selectedRowIndex: number | null = null;
+  isResume: boolean = false; // This will determine whether to resume the test
 
   upcomingTests: TestViewModel[] = [];
   filteredUpcomingTests: TestViewModel[] = [];
@@ -80,19 +81,18 @@ export class TestsComponent implements OnInit {
   @ViewChild('actionsTemplate', { static: true })
   actionsTemplate: TemplateRef<any>;
 
+  defaultTabIndex: number = 1;
+  activeTab: TestStatusViewModel = TestStatusViewModel.InProgress;
 
-
-
-
-
-
+  selectedItem: any = null;
 
   assignedStudents: userToAssignTest[] = [];
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private testService: TestService, private accountService: AccountService, private router: Router, private authService: AuthService, private renderer: Renderer2, private testResultService: TestResultService, private alertService: AlertService) { }
+  constructor(private changeDetectorRef: ChangeDetectorRef, private testService: TestService, private accountService: AccountService, private router: Router, private authService: AuthService, private renderer: Renderer2, private testResultService: TestResultService, private alertService: AlertService, private elRef: ElementRef) { }
 
   ngOnInit() {
     this.learnerId = this.authService.currentUser?.id;
+    this.openTab(this.activeTab);
     this.columns = [
       { prop: 'title', name: 'Name' },
       { prop: 'grade', name: 'Year' },
@@ -126,7 +126,8 @@ export class TestsComponent implements OnInit {
     this.loadingIndicator = true;
 
 
-    this.selectTab(TestStatusViewModel.InProgress);
+    this.openTab(TestStatusViewModel.InProgress);
+    console.log('Tabbbbbb')
     //this.testService.filterTests(TestStatusViewModel.InProgress).subscribe({
     //  next: (data) => {
     //    // Reset categories each time tests are fetched
@@ -166,12 +167,45 @@ export class TestsComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(): void {
+    this.updateActionButtons();
+  }
+  
+
+  onRowSelect(item: any, rowIndex: number): void {
+    this.selectedTest = item;  // Select the clicked row's test
+    this.selectedRowIndex = rowIndex;
+    console.log('Selected test:', item);
+    console.log('Selected row index:', rowIndex);
+  }
+  
+  // This method will handle the radio button change
+  onRadioChange(item: any): void {
+    this.selectedTest = item;
+    console.log('Radio button selected:', item);
+  }
+
+  onAttemptSelected(): void {
+    if (this.selectedItem) {
+      console.log(`Attempt clicked for: ${this.selectedItem.title}`);
+      this.showAttemptModal(this.selectedItem.id);
+    }
+  }
+  
+  onAssignSelected(): void {
+    if (this.selectedItem) {
+      console.log(`Assign clicked for: ${this.selectedItem.title}`);
+      this.showAssignedUsers(this.selectedItem.id);
+      // Logic for "Assign Students" action based on selectedItem
+    }
+  }
+
   refreshData() {
     this.alertService.startLoadingMessage();
     this.loadingIndicator = true;
 
 
-    this.selectTab(TestStatusViewModel.InProgress);
+    this.openTab(TestStatusViewModel.InProgress);
     this.editorModal.hide();
   }
 
@@ -321,18 +355,54 @@ export class TestsComponent implements OnInit {
     }
   }
 
-  selectTab(status: TestStatusViewModel) {
-    this.activeTab = status;
-    this.loadingIndicator = true;
+  // onTabChange(event: any): void {
+  //   const selectedIndex = event.index;
+  //   if (selectedIndex === 0) {
+  //     this.activeTab = 'pending';
+  //   } else if (selectedIndex === 1) {
+  //     this.activeTab = 'inprogress';
+  //   } else if (selectedIndex === 2) {
+  //     this.activeTab = 'completed';
+  //   }
+  // }
 
+  onTabChange(event: any): void {
+    const tabLabel = event.tab.textLabel;  // Get the label (name) of the selected tab
+    console.log('tab label -', tabLabel);
+    console.log('tab label Event-', event);
+    let status: TestStatusViewModel;
+  
+    // Map the selected tab label to the corresponding TestStatusViewModel
+    switch (tabLabel) {
+      case 'Pending':
+        status = TestStatusViewModel.Upcoming;
+        break;
+      case 'In Progress':
+        status = TestStatusViewModel.InProgress;
+        break;
+      case 'Completed':
+        status = TestStatusViewModel.Completed;
+        break;
+      default:
+        return; // If the tab label doesn't match, exit
+    }
+  
+    // Set active tab
+    this.activeTab = status;
+    console.log('Active Tab', this.activeTab);
+  
+    // Show loading indicator
+    this.loadingIndicator = true;
+  
+    // Call the service to fetch tests based on selected status
     this.testService.filterTests(status).subscribe({
       next: (data) => {
         // Clear current lists
         this.upcomingTests = [];
         this.inProgressTests = [];
         this.completedTests = [];
-
-        // Depending on the selected tab, populate the respective array
+  
+        // Populate the respective array based on selected status
         switch (status) {
           case TestStatusViewModel.Upcoming:
             this.upcomingTests = data;
@@ -347,19 +417,23 @@ export class TestsComponent implements OnInit {
             this.filteredCompletedTests = [...data];
             break;
         }
+  
+        // Prepare student lists or any other additional processing
         this.prepareStudentLists();
+  
+        // Stop the loading indicator after data is fetched
         this.loadingIndicator = false;
         this.alertService.stopLoadingMessage();
-
       },
       error: (error) => {
+        // Handle error
         console.error('Error fetching tests:', error);
         this.loadingIndicator = false;
         this.alertService.stopLoadingMessage();
-        this.loadingIndicator = false;
       }
     });
   }
+  
 
 
   onSearchChanged(value: string) {
@@ -634,7 +708,10 @@ export class TestsComponent implements OnInit {
   //  }
   //}
 
-  onStartTest(testId: number, isResume: boolean, attemptId?: number): void {
+  onStartTest() { 
+    let testId = this.selectedTest?.id
+    let isResume = this.selectedTest?.isResume
+    let attemptId = this.selectedTest?.attemptId
     if (isResume) {
       this.testResultService.resumeTest(attemptId).subscribe({
         next: (examDetails: ExamDetails) => {
@@ -694,6 +771,93 @@ export class TestsComponent implements OnInit {
 
   get canDeleteTests() {
     return this.accountService.userHasPermission(Permission.deleteTestsPermission);
+  }
+
+  
+  openTab(tabName: any) {
+    this.activeTab = tabName;
+    console.log(this.activeTab,'this.activeTab')
+    this.resetActionButtons();
+
+    // Show loading indicator
+    this.loadingIndicator = true;
+  
+    // Call the service to fetch tests based on selected status
+    this.testService.filterTests(tabName).subscribe({
+      next: (data) => {
+        // Clear current lists
+        this.upcomingTests = [];
+        this.inProgressTests = [];
+        this.completedTests = [];
+  
+        // Populate the respective array based on selected status
+        switch (tabName) {
+          case TestStatusViewModel.Upcoming:
+            this.upcomingTests = data;
+            this.filteredUpcomingTests = [...data];
+            break;
+          case TestStatusViewModel.InProgress:
+            this.inProgressTests = data;
+            this.filteredInProgressTests = [...data];
+            break;
+          case TestStatusViewModel.Completed:
+            this.completedTests = data;
+            this.filteredCompletedTests = [...data];
+            break;
+        }
+  
+        // Prepare student lists or any other additional processing
+        this.prepareStudentLists();
+  
+        // Stop the loading indicator after data is fetched
+        this.loadingIndicator = false;
+        this.alertService.stopLoadingMessage();
+      },
+      error: (error) => {
+        // Handle error
+        console.error('Error fetching tests:', error);
+        this.loadingIndicator = false;
+        this.alertService.stopLoadingMessage();
+      }
+    });
+  }
+
+  resetActionButtons() {
+    this.elRef.nativeElement.querySelectorAll('.action-btn').forEach((btn: HTMLElement) => {
+      btn.style.display = 'none';
+    });
+  }
+
+  updateActionButtons(item?:any,action?:any) {
+
+    this.selectedTest = item;
+    this.resetActionButtons();
+    if (!this.selectedTest) return;
+
+    const buttonMap: { [key: string]: string } = {
+      start: 'startButton',
+      resume: 'resumeButton',
+      retry: 'retryButton'
+    };
+    if (buttonMap[action]) {
+      this.showButton(buttonMap[action]);
+    }
+    if(this.activeTab === "InProgress" || this.activeTab === "Upcoming"){
+      this.showButton('assignStudentsButton');
+    }
+    if(this.activeTab === "Upcoming"){
+      this.showButton('deleteButton');
+    }
+
+    this.showButton('viewButton');
+  }
+
+  showButton(buttonId: string) {
+    console.log(buttonId,'buttonId')
+    const button = this.elRef.nativeElement.querySelector(`#${buttonId}`);
+    if (button) {
+      button.style.display = 'inline-block';
+    }
   }
 
 }
