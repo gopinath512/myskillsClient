@@ -50,6 +50,12 @@ input.form-control {
   display: inline-block;
 }
 
+.label{
+  font-weight: 500;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
 .unblock-user {
   margin-left: 34px;
 }
@@ -62,7 +68,7 @@ input.form-control {
 
 
 @media (min-width: 992px) {
-  .user-enabled {
-    margin-left: 40px;
-  }
+  // .user-enabled {
+  //   margin-left: 40px;
+  // }
 }

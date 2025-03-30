@@ -14,17 +14,25 @@
   border: 1px solid #dee2e6; /* This is a light grey border color by default */
   padding-left: 1rem; /* Adjust the left padding to create a gap */
   transition: border-color 0.2s ease-in-out;
+  border-radius: 10px;
+  cursor: pointer !important;
 }
 
 .option-container:hover {
-  border-color: #000000; /* Black color for hover state */
+  border-color: #272f38; /* Black color for hover state */
+  cursor: pointer;
 }
+
 .option-container.selected {
-  border-color: #007bff; /* This is the Bootstrap primary color, use your own if you have a custom one */
+  background-color: #e9f7fd; /* Light blue background for selected */
+  border: 1px solid #0073B1; /* Highlight border */
+  border-radius: 4px; /* Rounded corners */
 }
+
 .form-check {
   display: flex;
   align-items: center;
+  cursor: pointer;
   margin-bottom: 0; /* Remove bottom margin to align checkboxes with the text better */
 }
 
@@ -47,6 +55,9 @@
   /*margin-right: 0.5rem;*/ /* Provides some space between the checkbox and the CKEditor */
 /*}*/
 
+.progress-bar {
+  background-color: #0073B1;
+}
 
 
 .blur-overlay {
@@ -73,6 +84,12 @@
   border-radius: 50%;
   display: inline-block;
   margin-right: 5px;
+}
+
+.exam-title {
+  font-size: 20px;
+  color: #0073B1;
+  font-weight: 500;
 }
 
 /* For more control and maintainability, define classes for colors */
@@ -102,7 +119,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 80%;
+  // width: 80%;
 }
 
 /* Card styling */
@@ -128,6 +145,45 @@
 /* Offcanvas visibility state */
 .exam-page .offcanvas-end.show {
   transform: translateX(0); /* Show the panel */
+}
+
+.toggle-btn{
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
+
+.offcanvas-title{
+  margin-bottom: 0;
+  font-size: 20px;
+}
+
+// .question-text {
+//   max-width: 100%; /* Adjust as needed */
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   display: block; /* Ensures block-level formatting for ellipsis */
+// }
+
+.bg-success{
+  padding: 5px;
+  color: white;
+  border-radius: 5px;
+  font-size: 10px;
+
+}
+
+.bg-lightgray {
+  background-color: #f0f0f0; /* Light grey background color */
+}
+
+.questionContainer{
+  border-radius: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+  background-color: #e5f1f7;
 }
 
 .exam-page .offcanvas-end:not(.show) {
@@ -164,30 +220,10 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
+  border-bottom: 1px solid #e9ecef;
 }
 
 /* Attempted/unattempted indicator dots */
-/* Exam Name Styling */
-.exam-name {
-  font-size: 20px;
-  font-weight: bold;
-  color: #1976d2; /* Matches the blue header */
-  margin: 10px 0;
-  padding: 0 10px;
-  border-left: 4px solid #1976d2; /* Visual indicator */
-}
-
-/* Button container styling */
-.d-flex.flex-wrap {
-  gap: 8px; /* Space between buttons */
-}
-
-/* Button styling */
-.question-btn {
-  width: 50px; /* Set a consistent width for all buttons */
-  text-align: center;
-}
-
 .exam-page .dot {
   height: 12px;
   width: 12px;
@@ -197,7 +233,7 @@
 }
 
 .exam-page .dot.attempted {
-  background-color: #0d6efd;
+  background-color: green;
 }
 
 .exam-page .dot.unattempted {
@@ -214,6 +250,16 @@
   border-radius: 0.25rem;
 }
 
+.headerWrapper {
+  align-items: baseline;
+  justify-content: space-between;
+  display: flex;
+  margin-top: -6.5rem;
+  margin-bottom: 0;
+  border-radius: 5px;
+  padding: 10px 10px;
+}
+
 /* Adjustments for mobile view */
 @media (max-width: 991.98px) {
   .exam-page .offcanvas-end {
@@ -226,5 +272,25 @@
   }
 }
 
+.question-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Adjust the number of visible lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px; /* Adjust the width as needed */
+  white-space: normal; /* Prevent single-line overflow */
+}
 
+.review-button {
+  background-color: #d7e4ff;
+}
 
+.selected-question {
+  background-color: #b2d5e7; /* Light blue background */
+  transition: background-color 0.3s ease, border 0.3s ease; /* Smooth transition */
+}
+
+.time-remaining {
+  color: #dc3545;
+}

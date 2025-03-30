@@ -1,7 +1,7 @@
-<div class="test-details">
+<!-- <div class="test-details">
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title">{{ test?.title }}</h5>
+      <h5 class="card-title m-0">{{ test?.title }}</h5>
       <div class="row">
         <div class="col">
           <p class="card-text">
@@ -22,26 +22,31 @@
     </div>
   </div>
 </div>
-<br />
+<br /> -->
 <div class="assign-students">
   <div class="row">
-    <div class="col">
-      <h6>Available Students</h6>
-      <select multiple class="form-control" [(ngModel)]="selectedAvailable">
-        <option *ngFor="let student of availableStudents" [ngValue]="student">{{ student.fullName }}</option>
-      </select>
-    </div>
-    <div class="col-md-auto align-self-center">
-      <button class="btn btn-primary me-3" (click)="assignSelected()">Add &gt;</button>
-      <button class="btn btn-primary me-3" (click)="removeSelected()">&lt; Remove</button>
-      <button class="btn btn-secondary me-3" (click)="assignAll()">Add All &gt;&gt;</button>
-      <button class="btn btn-secondary" (click)="removeAll()">&lt;&lt; Remove All</button>
-    </div>
-    <div class="col">
-      <h6>Assigned Students</h6>
-      <select multiple class="form-control" [(ngModel)]="selectedAssigned">
-        <option *ngFor="let student of assignedStudents" [ngValue]="student">{{ student.fullName }}</option>
-      </select>
+    <!-- Available Students Section -->
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <label class="form-label">Available Students</label>
+      </div>
+      <div class="student-list">
+        <div *ngFor="let student of availableStudents" class="form-check student-item d-flex align-items-center mb-2">
+          <input 
+            type="checkbox" 
+            class="form-check-input me-3 styled-checkbox" 
+            id="student-{{student.id}}" 
+            [(ngModel)]="student.isSelected" 
+            (change)="onCheckboxChange(student)"
+          />
+          <label for="student-{{student.id}}" class="form-check-label student-label">
+            {{ student.fullName }}
+          </label>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+
+

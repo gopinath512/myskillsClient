@@ -1,61 +1,238 @@
-<div class="container my-5">
+<div class="my-2">  
 
-  <!--<div class="row control-box">
-    <div class="col-lg-8">
-      <div class="search-box">
-        <input type="search" class="form-control w-80" placeholder="Search" (input)="onSearch($event.target.value)">
-      </div>
-    </div>
-    <div class="col-lg-4 pe-lg-5">
-      <ul class="nav flex-column flex-lg-row justify-content-end">
-        <li *ngIf="canCreateTest" class="nav-item toolbaritem">
-          <a class="nav-link" href="javascript:;" (click)="navigateToCreateTest()">
-            <i class="fa fa-plus-circle"></i> Create Test
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>-->
+  <div class="row-container">
+    <!-- Search Box -->
+   
 
-  <div class="row control-box">
-    <div class="col-lg-10">
-      <div class="search-box">
-        <app-search-box (searchChange)="onSearchChanged($event)" placeholder="Search"></app-search-box>
-      </div>
-    </div>
-    <div class="col-lg-2 pe-lg-5">
-      <ul class="nav flex-column flex-lg-row justify-content-end">
-        <li *ngIf="canCreateTest" class="nav-item toolbaritem">
-      <button (click)="navigateToCreateTest()" type="button" class="btn btn-primary createTest">
-        <i class="fa fa-plus-circle"></i> Create Test
-    </button>
+    <!-- Action Buttons -->
+    <!-- <div class="action-buttons">
+      <button
+        *ngIf="isEditingIndex === selectedRowIndex && canEditTests"
+        class="action-button rounded"
+        (click)="saveTest(selectedTest, selectedRowIndex)"
+      >
+        Save
+      </button>
+      <button
+        *ngIf="isEditingIndex !== selectedRowIndex && canEditTests && activeTab === TestStatusViewModel.Upcoming"
+        class="action-button rounded"
+        (click)="editTest(selectedTest?.id)"
+      >
+        Edit
+      </button>
+      <button
+        *ngIf="canDeleteTests && activeTab === TestStatusViewModel.Upcoming"
+        class="action-button rounded"
+        (click)="removeTest(selectedTest?.id)"
+      >
+        Remove
+      </button>
+      <button
+        *ngIf="canViewTests"
+        class="action-button rounded"
+        (click)="viewQuestions(selectedTest)"
+      >
+        View Questions
+      </button>
+      <button
+        *ngIf="!canTakeTest"
+        class="action-button rounded"
+        (click)="showAssignedUsers(selectedTest)"
+        [disabled]="!selectedTest"
+      >
+        Assign Students
+      </button>
+      <button
+        *ngIf="canTakeTest"
+        class="action-button rounded"
+        (click)="showAttemptModal(selectedTest?.id)"
+        [disabled]="!selectedTest"
+      >
+        {{ selectedTest?.attemptCount }} Attempts
+      </button>
+      <button
+        *ngIf="canTakeTest && activeTab === TestStatusViewModel.InProgress"
+        class="action-button rounded"
+        (click)="onStartTest(selectedTest?.id, selectedTest?.isResume, selectedTest?.attemptId)"
+        [disabled]="!selectedTest"
+      >
+        {{ selectedTest?.isResume ? 'Resume Test' : 'Start Test' }}
+      </button>
+      <button
+        *ngIf="canTakeTest && activeTab === TestStatusViewModel.InProgress"
+        class="action-button rounded"
+        (click)="onActionselected()"
+        [disabled]="!selectedTest"
+      >
+        Actions
+      </button>
+      <button
+        *ngIf="canCreateTest"
+        class="action-button rounded"
+        (click)="navigateToCreateTest()"
+      >
+        Create Test
+      </button>
+    </div> -->
+    
 
-        </li>
-      </ul>
-    </div>
+    <!-- Tabs -->
+    <!-- <mat-tab-group
+      class="custom-tab-group"
+      mat-stretch-tabs="false"
+      mat-align-tabs="start"
+      [selectedIndex]="defaultTabIndex"
+      (selectedTabChange)="onTabChange($event)"
+    >
+  <mat-tab label="Pending"></mat-tab>
+  <mat-tab label="In Progress"></mat-tab>
+  <mat-tab label="Completed"></mat-tab>
+</mat-tab-group> -->
+<div class="dashboard">
+  <h2>Test Dashboard</h2>
+
+  <!-- Search Bar & Create Button -->
+  <div class="row-container">
+  <div class="search-box-container">
+    <app-search-box
+      class="search-box"
+      (searchChange)="onSearchChanged($event)"
+      placeholder="Search for a test..."
+    ></app-search-box>
+  </div>
+  <div class="action-buttons">
+    <button class="create-btn action-buttons"
+    *ngIf="canCreateTest"
+    (click)="navigateToCreateTest()"
+    >Create Test</button>
+  </div>
+</div>
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab" [class.active]="activeTab === 'Upcoming'" (click)="openTab('Upcoming')">Pending</div>
+    <div class="tab" [class.active]="activeTab === 'InProgress'" (click)="openTab('InProgress')">In Progress</div>
+    <div class="tab" [class.active]="activeTab === 'Completed'" (click)="openTab('Completed')">Completed</div>
   </div>
 
-  <!-- <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item" role="presentation">
-      <a class="nav-link" href="javascript:void(0);" [class.active]="activeTab === TestStatusViewModel.Upcoming" (click)="selectTab(TestStatusViewModel.Upcoming)">Upcoming Tests</a>
-    </li>
-    <li class="nav-item" role="presentation">
-      <a class="nav-link" href="javascript:void(0);" [class.active]="activeTab === TestStatusViewModel.InProgress" (click)="selectTab(TestStatusViewModel.InProgress)">In Progress</a>
-    </li>
-    <li class="nav-item" role="presentation">
-      <a class="nav-link" href="javascript:void(0);" [class.active]="activeTab === TestStatusViewModel.Completed" (click)="selectTab(TestStatusViewModel.Completed)">Completed</a>
-    </li>
-  </ul> -->
+  <!-- Tab Content -->
+  <div *ngIf="activeTab === 'Upcoming'" class="tab-container">
+    <table class="test-table">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Test Name</th>
+          <th>Subject</th>
+          <th>Year</th>
+        </tr>
+      </thead>
+      <tbody  *ngFor="let item of filteredUpcomingTests; let rowIndex = index">
+        <tr>
+          <td><input
+              type="radio"
+              name="rowSelection"
+              [value]="item"
+              [(ngModel)]="selectedTest"
+              (change)="updateActionButtons(item,'start')"
+            /></td>
+          <td>{{ item.title }}</td>
+          <td>📐 {{ item.subject }}</td>
+          <td>{{ item.grade }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <mat-accordion [multi]="true" class="custom-accordion">
+  <div *ngIf="activeTab === 'InProgress'" class="tab-container">
+    <table class="test-table">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Test Name</th>
+          <th>Subject</th>
+          <th>Year</th>
+        </tr>
+      </thead>
+      <tbody  *ngFor="let item of filteredInProgressTests; let rowIndex = index">
+        <tr>
+          <td><input
+              type="radio"
+              name="rowSelection"
+              [value]="item"
+              [(ngModel)]="selectedTest"
+              (change)="updateActionButtons(item,'resume')"
+            /></td>
+          <td>{{ item.title }}</td>
+          <td>📐 {{ item.subject }}</td>
+          <td>{{ item.grade }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <!-- Upcoming Tests Panel -->
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Upcoming Tests (<span [innerText]="filteredUpcomingTests?.length"></span>)</mat-panel-title>
-      </mat-expansion-panel-header>
-      <div id="myTabContent" class="tab-content">
-        <ngx-datatable
+  <div *ngIf="activeTab === 'Completed'" class="tab-container">
+    <table class="test-table">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Test Name</th>
+          <th>Subject</th>
+          <th>Year</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of filteredCompletedTests; let rowIndex = index" >
+        <tr>
+          <td><input
+            type="radio"
+            name="rowSelection"
+            [value]="item"
+            [(ngModel)]="selectedTest"
+            (change)="updateActionButtons(item,'resume')"
+          /></td>
+        <td>{{ item.title }}</td>
+        <td>📖 {{ item.subject }}</td>
+        <td>{{ item.grade }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-btn-container">
+    <button *ngIf="canTakeTest && activeTab === TestStatusViewModel.InProgress" class="action-btn start-btn" (click)="onStartTest(selectedTest?.id, selectedTest?.isResume, selectedTest?.attemptId)">
+      <i class="fa fa-play" aria-hidden="true"></i> {{ selectedTest?.isResume ? 'Resume Test' : 'Start Test' }}
+    </button>
+    <button class="action-btn view-btn" *ngIf="canViewTests" id="viewButton" (click)="viewQuestions(selectedTest)">View Questions</button>
+    <button *ngIf="canEditTests && activeTab === TestStatusViewModel.Upcoming" class="action-btn start-btn" (click)="editTest(selectedTest?.id)">
+      Edit
+    </button>
+    <button
+      *ngIf="canDeleteTests && activeTab === TestStatusViewModel.Upcoming"
+      class="action-btn delete-btn"
+      id="deleteButton" 
+      (click)="removeTest(selectedTest?.id)"
+    >
+      Delete Test
+    </button>
+      <button
+        *ngIf="!canTakeTest"
+        class="action-btn"
+        id="assignStudentsButton"
+        (click)="showAssignedUsers(selectedTest)"
+        [disabled]="!selectedTest"
+      >
+        Assign Students
+      </button>
+  </div>
+</div> 
+</div>
+
+
+  
+
+  <!-- Tab Content -->
+  <!-- <div class="tab-content">
+    <div *ngIf="activeTab === 'Upcoming'" class="content">
+      <ngx-datatable
           [loadingIndicator]="loadingIndicator"
           class="material colored-header sm table-x table-striped table-hover"
           [rows]="filteredUpcomingTests"
@@ -65,35 +242,42 @@
           [footerHeight]="50"
           [rowHeight]="'auto'">
         </ngx-datatable>
+    </div>
+    <div *ngIf="activeTab === 'InProgress'" class="content">
+      
+      <div class="custom-table">
+        <!-- Header Row -->
+        <!-- <div class="custom-row header">
+          <div class="custom-cell">Select</div>
+          <div class="custom-cell">Name</div>
+          <div class="custom-cell">Year</div>
+          <div class="custom-cell">Subject</div>
+        </div> -->
+      
+        <!-- Data Rows -->
+        <!-- <div
+          class="custom-row"
+          *ngFor="let item of filteredInProgressTests; let rowIndex = index"
+          [class.selected]="selectedTest === item"
+          (click)="onRowSelect(item, rowIndex)"
+        >
+          <div class="custom-cell">
+            <input
+              type="radio"
+              name="rowSelection"
+              [value]="item"
+              [(ngModel)]="selectedTest"
+              (change)="onRadioChange(item)"
+            />
+          </div>
+          <div class="custom-cell">{{ item.title }}</div>
+          <div class="custom-cell">{{ item.grade }}</div>
+          <div class="custom-cell">{{ item.subject }}</div>
+        </div>
       </div>
-    </mat-expansion-panel>
-  
-    <!-- In Progress Panel -->
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>In Progress (<span [innerText]="filteredInProgressTests?.length"></span>)</mat-panel-title>
-      </mat-expansion-panel-header>
-      <div id="myTabContent" class="tab-content">
-        <ngx-datatable
-          [loadingIndicator]="loadingIndicator"
-          class="material colored-header sm table-x table-striped table-hover"
-          [rows]="filteredInProgressTests"
-          [columns]="columns"
-          [columnMode]="'force'"
-          [headerHeight]="50"
-          [footerHeight]="50"
-          [rowHeight]="'auto'">
-        </ngx-datatable>
-      </div>
-    </mat-expansion-panel>
-  
-    <!-- Completed Panel -->
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Completed (<span [innerText]="filteredCompletedTests?.length"></span>)</mat-panel-title>
-      </mat-expansion-panel-header>
-      <div id="myTabContent" class="tab-content">
-        <ngx-datatable
+    </div>
+    <div *ngIf="activeTab === 'Completed'" class="content">
+      <ngx-datatable
           [loadingIndicator]="loadingIndicator"
           class="material colored-header sm table-x table-striped table-hover"
           [rows]="filteredCompletedTests"
@@ -103,60 +287,11 @@
           [footerHeight]="50"
           [rowHeight]="'auto'">
         </ngx-datatable>
-      </div>
-    </mat-expansion-panel>
-  
-  </mat-accordion>
-  
-
-  <!-- Tab Content -->
-  <!-- <div id="myTabContent" class="tab-content"> -->
-    <!-- Upcoming Tests Tab -->
-    <!-- <div class="tab-pane fade" [class.show]="activeTab === TestStatusViewModel.Upcoming" [class.active]="activeTab === TestStatusViewModel.Upcoming" id="upcomingTests" role="tabpanel">
-      <ngx-datatable *ngIf="activeTab === TestStatusViewModel.Upcoming"
-                     [loadingIndicator]="loadingIndicator"
-                     class="material colored-header sm table-x table-striped table-hover"
-                     [rows]="filteredUpcomingTests"
-                     [columns]="columns"
-                     [columnMode]="'force'"
-                     [headerHeight]="50"
-                     [footerHeight]="50"
-                     [rowHeight]="'auto'">
-      </ngx-datatable>
     </div> -->
-
-    <!-- In Progress Tests Tab -->
-    <!-- <div class="tab-pane fade" [class.show]="activeTab === TestStatusViewModel.InProgress" [class.active]="activeTab === TestStatusViewModel.InProgress" id="inProgress" role="tabpanel">
-      <ngx-datatable *ngIf="activeTab === TestStatusViewModel.InProgress"
-                     class="material colored-header sm table-x table-striped table-hover"
-                     [loadingIndicator]="loadingIndicator"
-                     [rows]="filteredInProgressTests"
-                     [columns]="columns"
-                     [columnMode]="'force'"
-                     [headerHeight]="50"
-                     [footerHeight]="50"
-                     [rowHeight]="'auto'">
-      </ngx-datatable>
-    </div> -->
-
-    <!-- Completed Tests Tab -->
-    <!-- <div class="tab-pane fade" [class.show]="activeTab === TestStatusViewModel.Completed" [class.active]="activeTab === TestStatusViewModel.Completed" id="completed" role="tabpanel">
-      <ngx-datatable *ngIf="activeTab === TestStatusViewModel.Completed"
-                     class="material colored-header sm table-x table-striped table-hover"
-                     [rows]="filteredCompletedTests"
-                     [loadingIndicator]="loadingIndicator"
-                     [columns]="columns"
-                     [columnMode]="'force'"
-                     [headerHeight]="50"
-                     [footerHeight]="50"
-                     [rowHeight]="'auto'">
-      </ngx-datatable>
-    </div> -->
-  <!-- </div> -->
-
+  <!-- </div>  -->
 
   <!-- Templates for ngx-datatable (common for all tabs if applicable) -->
-  <ng-template #attemptTemplate let-value="value" let-row="row">
+  <!-- <ng-template #attemptTemplate let-value="value" let-row="row">
     <a href="javascript:void(0);" (click)="showAttemptModal(row.id)" *ngIf="canTakeTest">{{ row.attemptCount }} Attempts</a>
   </ng-template>
 
@@ -183,7 +318,7 @@
       </button>
 
     </div>
-  </ng-template>
+  </ng-template> -->
 
 
   <div class="modal" id="assignStudentsModal" #assignStudentsModalRef>
@@ -192,7 +327,7 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">Assigned Students</h4>
-          <button type="button" class="close" data-dismiss="modal" (click)="hideModal()">&times;</button>
+          <button mat-button type="button" class="close" data-dismiss="modal" (click)="hideModal()">&times;</button>
         </div>
         <!-- Modal Body -->
         <div class="modal-body">
@@ -214,7 +349,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Questions</h4>
-          <button type="button" class="close" data-dismiss="modal" (click)="hideQuestionModal()">&times;</button>
+          <button mat-button type="button" class="close" data-dismiss="modal" (click)="hideQuestionModal()">&times;</button>
         </div>
         <div class="modal-body">
           <app-view-questions [questionViewModels]="questionModel"></app-view-questions>
@@ -234,9 +369,9 @@
 <div class="modal" id="attemptModal" #attemptModalRef>
   <div class="modal-dialog custom-modal-width">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header d-flex justify-content-between">
         <h5 class="modal-title">Test Attempts</h5>
-        <button type="button" class="close" (click)="hideAttemptModalRefModal()">×</button>
+        <button type="button" class="btn btn-secondary close" (click)="hideAttemptModalRefModal()">×</button>
       </div>
       <div class="modal-body">
         <app-test-attempt [learnerId]="learnerId" [testId]="selectedTestId"></app-test-attempt>
