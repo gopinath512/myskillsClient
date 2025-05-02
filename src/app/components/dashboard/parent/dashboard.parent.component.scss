@@ -1,0 +1,112 @@
+.no-child {
+    text-align: center;
+}
+
+mat-icon {
+  color: green;
+  width: 40px;
+  height: 25px;
+  font-size: 30px;
+}
+
+.dashboard {
+    width: 90%;
+    max-width: 1100px;
+    background: white;
+    padding: 30px;
+    margin: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.section {
+    background: #f9f9f9;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.section:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.box {
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.circular-chart {
+  width: 80px;
+  height: 80px;
+  transform: rotate(-90deg);
+}
+
+.circular-chart .bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.circular-chart .fg {
+  fill: none;
+  stroke-width: 3.8;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.5s ease;
+}
+
+.circular-chart .green {
+  stroke: #28a745; /* Bootstrap green */
+}
+
+.circular-chart .red {
+  stroke: #dc3545; /* Bootstrap red */
+}
+
+.circle {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.percentage.dual {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  gap: 4px;
+}
+
+.percentage.dual .green-text {
+  color: #28a745;
+}
+
+.percentage.dual .red-text {
+  color: #dc3545;
+}
+
+.legend {
+  font-size: 14px;
+}
+
+.legend .dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.legend .green {
+  background-color: #28a745;
+}
+
+.legend .red {
+  background-color: #dc3545;
+}

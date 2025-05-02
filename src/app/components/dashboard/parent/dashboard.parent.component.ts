@@ -14,8 +14,12 @@ import { Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ConfigurationService } from '../../../services/configuration.service';
 import { AuthService } from '../../../services/auth.service';
+import { ReferenceDataService } from '../../../services/Reference/reference-data.service';
 interface WidgetIndex { element: string, index: number }
 import { fadeInOut } from '../../../services/animations';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartConfiguration, ChartType } from 'chart.js';
+import { ReferenceDataViewModel } from '../../../models/ReferenceModel/reference.model';
 
 @Component({
   selector: 'app-dashboard.parent',
@@ -34,6 +38,9 @@ export class DashboardParentComponent implements OnInit {
   loadingIndicator: boolean;
   startDate: Date;
   endDate: Date;
+  parentChildReport: any;
+  childrenPerformanceReport: any;
+  grades: ReferenceDataViewModel[] = [];
 
   allRoles: Role[] = [];
   readonly DBKeyWidgetsOrder = 'home-component.widgets_order';
@@ -55,6 +62,30 @@ export class DashboardParentComponent implements OnInit {
 
   @ViewChild('userEditor', { static: true })
   userEditor: UserInfoComponent;
+
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+
+  // Labels and Data
+  completePercent = 70;
+  inProgressPercent = 30;
+  completeLabel = 'Complete';
+  inProgressLabel = 'In Progress';
+
+  // Chart Options
+  doughnutChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: false }
+    },
+    // 👇👇 this casting shuts up TypeScript
+  };
+
+  doughnutChartColors = [
+    {
+      backgroundColor: ['#4caf50', '#f44336'], // Green for completed, red for incomplete
+    }
+  ];
 
   recentActivities = [
     {
@@ -79,11 +110,22 @@ export class DashboardParentComponent implements OnInit {
     }
   ];
 
+  donutData = [
+    {
+      "name": "Critical",
+      "value": 40
+    },
+    {
+      "name": "Incomplete",
+      "value": 60
+    }
+  ];
+
   // Control variable for "View More" functionality
   showMoreActivities = false;
   currentTestDetails = {};
 
-  constructor(private authService: AuthService,private alertService: AlertService, private translationService: AppTranslationService, private accountService: AccountService, private router: Router, public configurations: ConfigurationService) {
+  constructor(private authService: AuthService,private alertService: AlertService, private translationService: AppTranslationService, private accountService: AccountService, private router: Router, public configurations: ConfigurationService,  private referenceDataService: ReferenceDataService) {
   }
 
 
@@ -108,6 +150,25 @@ export class DashboardParentComponent implements OnInit {
     }
 
     this.loadData();
+    this.parentReport();
+    this.childrenPerformance();
+    this.getGrades();
+  }
+
+  getGrades(): void {
+    this.referenceDataService.getGrades()
+      .subscribe(grades => {
+        this.grades = grades;
+        // You can now work with the 'grades' array in your component
+      });
+  }
+
+  childGrade(child) {
+    if (this.grades && child && child.gradeId) {
+      return this.grades.find(item => item.key == child?.gradeId)?.description;
+    }
+    // return this.grades.find(item => item.key == child?.gradeId)?.description;
+    return '-';
   }
 
   drop(event: CdkDragDrop<HTMLDivElement>) {
@@ -135,19 +196,19 @@ export class DashboardParentComponent implements OnInit {
     this.saveWidgetIndexes(widgetIndexes);
   }
 
-  //ngAfterViewInit() {
+  ngAfterViewInit() {
 
-  //  this.userEditor.changesSavedCallback = () => {
-  //    this.addNewUserToList();
-  //    this.editorModal.hide();
-  //  };
+   this.userEditor.changesSavedCallback = () => {
+     this.addNewUserToList();
+     this.editorModal.hide();
+   };
 
-  //  this.userEditor.changesCancelledCallback = () => {
-  //    this.editedUser = null;
-  //    this.sourceUser = null;
-  //    this.editorModal.hide();
-  //  };
-  //}
+   this.userEditor.changesCancelledCallback = () => {
+     this.editedUser = null;
+     this.sourceUser = null;
+     this.editorModal.hide();
+   };
+  }
   saveWidgetIndexes(indexes: WidgetIndex[]) {
     this.configurations
       .saveConfiguration(indexes, `${this.DBKeyWidgetsOrder}:${this.authService.currentUser?.id}`);
@@ -201,6 +262,53 @@ export class DashboardParentComponent implements OnInit {
     }
   }
 
+  parentReport(): void {
+    this.accountService.getParentReport()
+      .subscribe(parentReport => {
+        this.parentChildReport = parentReport;
+        // You can now work with the 'grades' array in your component
+      });
+  }
+
+  childrenPerformance(): void {
+    this.accountService.getchildrenPerformanceReport()
+      .subscribe(childrenPerformance => {
+        this.childrenPerformanceReport = childrenPerformance;
+        // You can now work with the 'grades' array in your component
+      });
+  }
+
+  get testProgressData() {
+    if (this.parentChildReport?.testsCreated == 0) {
+      return '-';
+    }
+    return `${this.parentChildReport?.testsInProgress} / ${this.parentChildReport?.testsCreated}`;    
+  }
+
+  testStatus(subjectData) {
+    if (!subjectData && !subjectData?.topicsAttempted && !subjectData?.totalTopics) {
+      return 'No data available';
+    }
+
+    return `${subjectData?.topicsAttempted}/${subjectData.totalTopics}`
+  }
+
+  getBadgeClass(level: string): string {
+    switch (level?.toLowerCase()) {
+      case 'beginner':
+        return 'bg-success';
+      case 'intermediate':
+        return 'bg-warning';
+      case 'advanced':
+        return 'bg-danger';
+      default:
+        return 'bg-secondary'; // fallback
+    }
+  }
+
+  createTest() {
+    this.router.navigate(['/createtestsparent']);
+  }
 
   onDataLoadSuccessful(users: User[], roles: Role[]) {
     this.alertService.stopLoadingMessage();
@@ -297,6 +405,14 @@ export class DashboardParentComponent implements OnInit {
     return this.accountService.userHasPermission(Permission.manageUsersPermission);
   }
 
+  get userName(): string {
+    return this.authService.currentUser ? this.authService.currentUser.userName : '';
+  }
+
+  get isChildAvailable() {
+    return (this?.rows?.length > 0) ? false : true ;
+  }
+
   onUserNameClick(event: any, row: any) {
     // Extract the ID from the clicked row, assuming there is a 'id' property in your data
     const userId = row.id;
@@ -359,5 +475,12 @@ export class DashboardParentComponent implements OnInit {
         return activityDate >= this.startDate && activityDate <= this.endDate;
       });
     }
+  }
+
+  newChildUser() {
+    this.editingUserName = null;
+    this.sourceUser = null;
+    this.editedUser = this.userEditor.newUser(this.allRoles);
+    this.editorModal.show();
   }
 }
