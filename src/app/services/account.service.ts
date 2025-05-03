@@ -52,6 +52,14 @@ export class AccountService {
     return this.accountEndpoint.getUsersEndpoint<User[]>(page, pageSize);
   }
 
+  getParentReport() {
+    return this.accountEndpoint.getParentReport();
+  }
+
+  getchildrenPerformanceReport() {
+    return this.accountEndpoint.getchildrenPerformanceReport();
+  }
+
   getUsersForAssign() {
     return this.accountEndpoint.getUsersToAssignTestEndpoint<userToAssignTest[]>();
   }

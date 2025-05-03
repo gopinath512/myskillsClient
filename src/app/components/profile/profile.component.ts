@@ -4,7 +4,6 @@ import { AlertService, MessageSeverity, DialogType } from '../../services/alert.
 import { AccountService } from '../../services/account.service';
 import { Utilities } from '../../services/utilities';
 import { LocalStoreManager } from '../../services/local-store-manager.service';
-import { DBkeys } from '../../services/db-keys';
 import { User } from '../../models/user.model';
 import { UserEdit } from '../../models/user-edit.model';
 import { Role } from '../../models/role.model';
@@ -14,7 +13,7 @@ import { ReferenceDataService } from '../../services/Reference/reference-data.se
 import { UserType } from '../../models/enums';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { UserInfoComponent } from '../controls/user-info.component';
-
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -49,6 +48,11 @@ export class ProfileComponent implements OnInit {
   sourceUser: UserEdit;
   editingUserName: { name: string };
   loadingIndicator: boolean;
+  isCropModalVisible: boolean = false; // Variable to control modal visibility
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  currentImageKey: string;
+  currentChildData: any;
 
   @ViewChild('indexTemplate', { static: true })
   indexTemplate: TemplateRef<any>;
@@ -264,47 +268,65 @@ export class ProfileComponent implements OnInit {
     // this.isEditMode = true;
     // this.showValidationErrors = true;
     // this.isChangePassword = false;
-    console.log(this.userEdit,'this.userEdit')
     this.editingUserName = { name: this.userEdit.userName };
     this.sourceUser = this.userEdit;
-    console.log(this.userEditor,this.userEdit, this.allRoles,this.editorModal,'this.userEditor')
     this.editedUser = this.userEditor.editUser(this.userEdit, this.allRoles);
     this.editorModal.show();
   }
 
-   triggerFileInput(key) {
-    if(key==="parent"){
-      document.getElementById('upload-parent-image').click();
-    }else{
-      document.getElementById('upload-child-image').click();
-    }
+ triggerFileInput(key, childData?) {
+  this.currentImageKey = key;
+  this.currentChildData = childData;
+  if (key === "parent") {
+    document.getElementById('upload-parent-image').click();
+  } else {
+    document.getElementById('upload-child-image').click();
   }
-  
-   previewImage(event,key,childData?) {
-    const input = event.target;
-    const file = input.files[0];
+}
+
+previewImage(event: any, key: string, childData?: any): void {
+  this.imageChangedEvent = event;
+  this.openCropModal(); 
+}
+
+imageCropped(event: ImageCroppedEvent) {
+  this.croppedImage = event.base64;
+}
+
+loadImageFailed() {
+  alert('Image load failed');
+}
+
+openCropModal() {
+  this.isCropModalVisible = true; // Show the modal
+}
+
+closeCropModal() {
+  this.isCropModalVisible = false;
+  this.onCropModalHidden(); 
+}
+
+saveCroppedImage() {
+  if (this.currentImageKey === "parent") {
     this.userEdit = new UserEdit();
-    Object.assign(this.userEdit, this.user);
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const profileImage = e.target.result;
-        if(key === "parent"){
-          this.userEdit['profileImage'] = profileImage; 
-        }else if(key === "child"){
-          let tempChildData = this.rows;
-          tempChildData.forEach((child, index) => {
-            if(child.id === childData.id){
-              child['profileImage'] = profileImage;
-            }
-          })
-          this.rows = tempChildData;
-        }
-      };
-      reader.readAsDataURL(file);
-    }
+    this.userEdit['profileImage'] = this.croppedImage;
+  } else if (this.currentImageKey === "child") {
+    let tempChildData = this.rows;
+    tempChildData.forEach((child, index) => {
+      if (child.id === this.currentChildData.id) {
+        child['profileImage'] = this.croppedImage;
+      }
+    });
+    this.rows = tempChildData;
   }
-  
+  this.closeCropModal(); 
+}
+
+onCropModalHidden() {
+  this.imageChangedEvent = '';
+  this.croppedImage = '';
+}
+
   save() {
     this.isSaving = true;
     this.alertService.startLoadingMessage('Saving changes...');

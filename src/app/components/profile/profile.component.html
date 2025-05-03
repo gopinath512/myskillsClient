@@ -36,9 +36,10 @@
                 alt="Profile Image"
                 class="profile-image"
                 width="150"
+                (click)="triggerFileInput('parent')"
               />
               <i class="fa-solid fa-camera iconStyles" (click)="triggerFileInput('parent')"></i>
-              <input type="file" id="upload-parent-image" class="upload-input" accept="image/*" (change)="previewImage($event,'parent')" />
+              <input type="file" id="upload-parent-image" class="upload-input" accept="image/*" (change)="previewImage($event, 'parent')" />
             </div>
           </div>          
           <!-- <div class="d-flex flex-column align-items-center text-center">
@@ -224,9 +225,10 @@
                   alt="Profile Image"
                   class="profile-image"
                   width="150"
+                  (click)="triggerFileInput('child',childData)"
                 />
-                <i class="fa-solid fa-camera iconStyles" (click)="triggerFileInput('child')"></i>
-              <input type="file" id="upload-child-image" class="upload-input" accept="image/*" (change)="previewImage($event,'child',childData)" />
+                <i class="fa-solid fa-camera iconStyles" (click)="triggerFileInput('child',childData)"></i>
+                <input type="file" id="upload-child-image" class="upload-input" accept="image/*" (change)="previewImage($event,'child',childData)" />
             </div>
             </div>             
           <div class="childContainer">
@@ -255,7 +257,33 @@
       </div>
     </div>
     
-    
+    <!-- Add this modal at the end of your template -->
+<div *ngIf="isCropModalVisible" class="modal fade show" [ngClass]="{ 'd-block': isCropModalVisible }" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Crop Image</h2>
+        <button type="button" class="btn-close float-end fs-sm" title="Close" (click)="closeCropModal()"></button>
+      </div>
+      <div class="modal-body">
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="1 / 1"
+          [resizeToWidth]="150"
+          format="png"
+          (imageCropped)="imageCropped($event)"
+          (loadImageFailed)="loadImageFailed()"
+        ></image-cropper>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeCropModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="saveCroppedImage()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   </div>
 
 <!-- <div>

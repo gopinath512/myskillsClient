@@ -1,29 +1,165 @@
-<div >
-  <div #widgetsContainer cdkDropList (cdkDropListDropped)="drop($event)" class="row">
-    <div *ngIf="!configurations.showDashboardStatistics && !configurations.showDashboardNotifications &&
-         !configurations.showDashboardTodo && !configurations.showDashboardBanner" class="col-12 my-5">
-      <div class="card card-body bg-light">
-        <h4 class="text-muted text-center text-link">
-          {{'home.NoWidgets1' | translate}}
-          <a routerLink="/settings" fragment="preferences"><i class="fa fa-sliders"></i> {{'settings.tab.Preferences' | translate}}</a>
-          {{'home.NoWidgets2' | translate}}
-        </h4>
+<!--<header class="pageHeader">
+  <h3><i class="fa fa-tachometer fa-lg page-caption" aria-hidden="true"></i>Family Learning Dashboard</h3>
+</header>-->
+<div *ngIf="isChildAvailable; else childAdded" class="no-child">  
+  <div class="dashboard">
+    <h1>Welcome, {{userName}}</h1>
+    <p class="info">Empower your child's learning journey with interactive tests and personalized insights.</p>
+
+    <div class="section">
+        <h3>👶 Add Your Child</h3>
+        <p>Start by adding your child to track their progress.</p>
+        <button class="btn btn-primary  createUser"  (click)="newChildUser()">Add child</button>
+    </div>
+  </div>
+</div>
+<ng-template #childAdded>
+  <div class="container my-4">
+    <div class="d-flex justify-content-end align-items-center gap-2 mb-3">
+      <button class="btn btn-primary" (click)="createTest()">Create Test</button>
+      <button class="btn btn-primary" (click)="newChildUser()">Add Child</button>
+    </div>
+    <div class="row g-3 mb-3 align-items-stretch">
+      <!-- Card 1 -->
+      <div class="col-6 col-md-2">
+        <div class="card box text-center h-100">
+          <div class="card-body">
+            <h1><strong>{{testProgressData}}</strong></h1>
+            <p>Tests</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Card 2 -->
+      <div class="col-6 col-md-2">
+        <div class="card box text-center h-100">
+          <div class="card-body">
+            <h1><strong>{{parentChildReport?.totalChildren}}</strong></h1>
+            <p>Children</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="col-6 col-md-2">
+        <div class="card box text-center h-100">
+          <div class="card-body">
+            <h1><strong>{{parentChildReport?.testsCreated}}</strong></h1>
+            <p>Created</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Card 5 -->
+      <div class="col-6 col-md-2">
+        <div class="card box text-center h-100">
+          <div class="card-body">
+            <h1><strong>{{parentChildReport?.testsInProgress}}</strong></h1>
+            <p>In Progress</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Donut Chart Card -->
+      <div class="col-12 col-md-4">
+        <div class="card box text-center h-100">
+          <div class="card-body d-flex flex-column justify-content-center">
+            <div class="d-flex align-items-center justify-content-center gap-4">
+        
+              <!-- Donut Chart -->
+              <div class="circle mb-2 position-relative">
+                <svg viewBox="0 0 36 36" class="circular-chart">
+                  <!-- Background Circle -->
+                  <path class="bg"
+                    d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831" />
+        
+                  <!-- Complete (Green) -->
+                  <path class="fg green"
+                    [attr.stroke-dasharray]="completePercent + ', 100'"
+                    stroke-dashoffset="0"
+                    d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831" />
+        
+                  <!-- In Progress (Red) -->
+                  <path class="fg red"
+                    [attr.stroke-dasharray]="inProgressPercent + ', 100'"
+                    [attr.stroke-dashoffset]="-completePercent"
+                    d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+        
+                <!-- Dual Percentage Text -->
+                <!-- <div class="percentage dual">
+                  <span class="green-text">{{ completePercent }}%</span>
+                  <span class="red-text">{{ inProgressPercent }}%</span>
+                </div> -->
+              </div>
+        
+              <!-- Legend -->
+              <div class="text-start">
+                <div class="legend">
+                  <div><span class="dot green"></span> Complete</div>
+                  <div><span class="dot red"></span> In Progress</div>
+                </div>
+              </div>        
+            </div>
+          </div>
+        </div>        
+      </div>      
+    </div>
+    <div *ngFor="let child of childrenPerformanceReport;">
+      <div class="card box shadow-sm p-3 mb-3 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div>
+            <h3 class="fw-bold mb-0">{{child.childFullName}}</h3>
+            <small class="text-muted">{{child.gradeName}}</small>
+          </div>
+          <button class="btn btn-primary btn-sm">View Details</button>
+        </div>
+      
+        <hr class="my-2">
+      
+        <!-- Subject Row -->
+         <div *ngFor="let subjectSummary of child?.subjectSummaries">
+          <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+            <div class="col-3 fw-medium">{{subjectSummary?.subjectName}}</div>
+            <div class="col-3"><span class="badge" [ngClass]="getBadgeClass(subjectSummary?.overallLevel)">{{subjectSummary?.overallLevel}}</span></div>
+            <div class="col-2 text-muted">{{testStatus(subjectSummary)}} Topics</div>
+            <div class="col-2 text-muted">{{subjectSummary?.totalTimeTakenMins}} Minutes</div>
+            <div class="col-2 text-end"><i class="bi bi-chevron-right"></i></div>
+          </div>
+         </div>
       </div>
     </div>
+  </div>
+  <div>
+    <div #widgetsContainer cdkDropList (cdkDropListDropped)="drop($event)" class="row">
+      
+      <!-- <app-test-overall-report></app-test-overall-report> -->
+  
+      <!-- <app-recent-activities></app-recent-activities> -->
+      
+      <!-- <app-child-overview></app-child-overview> -->
+  
+      
+    </div>
+  </div>
+</ng-template>
 
-    <h1 [innerText]="rows.length"></h1>
-
-    <app-test-overall-report></app-test-overall-report>
-
-    <app-recent-activities></app-recent-activities>
-    
-    <app-child-overview></app-child-overview>
-
-    <div class="col-12 mb-4 widget-container px-0">
-      <div class="card card-body bg-light">
-        <h5 class="text-muted d-inline-block">{{'home.StatisticsTitleForTest' | translate}}</h5>
-        <div *cdkDragPlaceholder [ngStyle]="{'min-height.px': dashboardStatistics.offsetHeight }" class="widget-container-placeholder mb-4"></div>
-        <app-test-statistics></app-test-statistics>
+<div class="modal fade" bsModal #editorModal="bs-modal" (onHidden)="onEditorModalHidden()" [config]="{ backdrop: 'static' }" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 *ngIf="!editingUserName" class="modal-title float-start"><mat-icon>person_add</mat-icon> {{ 'users.management.AddProfile' | translate }}</h2>
+        <h2 *ngIf="editingUserName" class="modal-title float-start"><i class="fa-solid fa-pen-to-square editIcon"></i>{{ 'users.management.EditProfile' | translate:editingUserName }}</h2>
+        <button type="button" class="btn-close float-end fs-sm" title="Close" (click)="editorModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <app-user-info #userEditor [isGeneralEditor]="true" [isParentuser]="true"></app-user-info>
       </div>
     </div>
   </div>

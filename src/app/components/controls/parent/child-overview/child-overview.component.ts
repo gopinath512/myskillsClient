@@ -103,7 +103,6 @@ export class ChildOverviewComponent implements OnInit, AfterViewInit {
 
     this.rowsCache = [...users];
     this.rows = users;
-
     this.allRoles = roles;
   }
 
