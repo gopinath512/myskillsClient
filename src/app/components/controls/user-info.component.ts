@@ -238,18 +238,23 @@ export class UserInfoComponent implements OnInit {
   save() {
     this.isSaving = true;
     this.alertService.startLoadingMessage('Saving changes...');
-    console.log(this.userEdit,this.user,'userEdit')
+    console.log(this.userEdit,this.user,'userEdit');
+    console.log(this.isParentuser, 'isParent');
+    console.log(this.isNewUser, 'isNewUser');
     if (this.isNewUser) {
       if (this.isParentuser) {
-        this.user.roles = []
+        this.userEdit.roles = []
 
-        this.user.roles.push('learner');
+        this.userEdit.roles.push('child');
+        console.log(this.userEdit, 'userEdit--inside');
       } 
       this.accountService.newUser(this.userEdit).subscribe(user => this.saveSuccessHelper(user), error => this.saveFailedHelper(error));
     } else {
       if (this.isParentuser) {
         this.userEdit.isParent = true;
+        console.log(this.userEdit, 'userEdit--inside-else');
       }
+      console.log(this.isParentuser, 'isParent');
       this.accountService.updateUser(this.userEdit).subscribe(response => this.saveSuccessHelper(), error => this.saveFailedHelper(error));
     }
   }

@@ -115,7 +115,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CreatetestsParentComponent } from './components/tests/createTestParent/createtests-parent.component';
 import { ProfileComponent } from './components/profile/profile.component';
-
+import { ImageCropperModule } from 'ngx-image-cropper';
 @NgModule({
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
@@ -207,7 +207,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     MatExpansionModule,
     MatRadioModule,
     MatButtonToggleModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    ImageCropperModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },

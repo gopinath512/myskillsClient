@@ -232,7 +232,7 @@ export class TestAttemptComponent implements OnChanges, OnDestroy {
           next: (data) => {
             this.attemptData = data;
              this.currentTestId
-            this.initPerformanceTrendChart();
+          
             this.customersChartOptions = this.getCustomerseChartOptions(this.obj);
           },
           error: (error) => console.error(error)
@@ -311,30 +311,5 @@ export class TestAttemptComponent implements OnChanges, OnDestroy {
   }
 
 
-
-  initPerformanceTrendChart() {
-    this.chart = new Chart('performanceTrendChart', {
-      type: 'line', // Example chart type
-      data: {
-        labels: ['Test 1', 'Test 2', 'Test 3', 'Test 4'], // X-axis labels
-        datasets: [
-          {
-            label: 'Performance Trend',
-            data: [75, 85, 80, 90], // Example data for the trend
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            fill: true
-          }
-        ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  }
 
 }

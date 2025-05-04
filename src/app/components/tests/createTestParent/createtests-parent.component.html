@@ -129,7 +129,7 @@
     >
       <option value="" selected>Select Student</option>
       <option *ngFor="let student of unassignedStudentsOptions" [value]="student.key">
-        {{ student.value }}x
+        {{ student.value }}
     </select>
     <div *ngIf="isFormSubmitted && classSelection.invalid" class="error-text">
       Student selection is required.

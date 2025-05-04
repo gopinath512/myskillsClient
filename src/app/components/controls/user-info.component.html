@@ -305,13 +305,13 @@
 
     <!--******************************************************************************************************-->
 
-    <div *ngIf="!isEditMode || canAssignRoles" class="row">
+    <div *ngIf="!isEditMode" class="row">
       <div class="col-lg-12">
         <hr class="hr-separator" [class.info-separator]="!isEditMode" [class.edit-separator]="isEditMode" />
       </div>
     </div>
 
-    <div *ngIf="((!isEditMode || canAssignRoles) || !isParentuser) && !userEdit?.jobTitle " class="row">
+    <!-- <div *ngIf="((!isEditMode || canAssignRoles) || !isParentuser) && !userEdit?.jobTitle " class="row">
       <div *ngIf="!isEditMode" >
       <label [class.col-lg-3]="isViewOnly" [class.col-lg-2]="!isViewOnly" class="col-form-label" for="roles-user-info">{{'users.editor.Roles' | translate}}</label>
       </div>
@@ -339,7 +339,7 @@
           {{'users.editor.RoleRequired' | translate}}
         </span>
       </div>
-    </div>
+    </div> -->
 
     <div class="row" *ngIf="!userEdit?.jobTitle">
       <div class="col-lg-12">

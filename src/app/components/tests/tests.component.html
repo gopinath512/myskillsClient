@@ -159,7 +159,7 @@
               name="rowSelection"
               [value]="item"
               [(ngModel)]="selectedTest"
-              (change)="updateActionButtons(item,'resume')"
+              (change)="updateActionButtons(item, 'resume')"
             /></td>
           <td>{{ item.title }}</td>
           <td>📐 {{ item.subject }}</td>
@@ -186,7 +186,7 @@
             name="rowSelection"
             [value]="item"
             [(ngModel)]="selectedTest"
-            (change)="updateActionButtons(item,'resume')"
+            (change)="updateActionButtons(item,'completed')"
           /></td>
         <td>{{ item.title }}</td>
         <td>📖 {{ item.subject }}</td>
@@ -202,6 +202,7 @@
       <i class="fa fa-play" aria-hidden="true"></i> {{ selectedTest?.isResume ? 'Resume Test' : 'Start Test' }}
     </button>
     <button class="action-btn view-btn" *ngIf="canViewTests" id="viewButton" (click)="viewQuestions(selectedTest)">View Questions</button>
+    <button class="btn btn-primary" *ngIf="canViewTestResults" id="viewButton" (click)="showAttemptModal(selectedTest?.id)">Attempts</button>
     <button *ngIf="canEditTests && activeTab === TestStatusViewModel.Upcoming" class="action-btn start-btn" (click)="editTest(selectedTest?.id)">
       Edit
     </button>
@@ -374,7 +375,7 @@
         <button type="button" class="btn btn-secondary close" (click)="hideAttemptModalRefModal()">×</button>
       </div>
       <div class="modal-body">
-        <app-test-attempt [learnerId]="learnerId" [testId]="selectedTestId"></app-test-attempt>
+        <app-test-attempt [learnerId]="learnerId" [testId]="selectedTest?.id"></app-test-attempt>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="hideAttemptModalRefModal()">Close</button>

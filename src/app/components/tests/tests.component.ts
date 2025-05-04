@@ -595,7 +595,7 @@ export class TestsComponent implements OnInit {
   }
 
   navigateToCreateTest() {
-    this.router.navigate(['/createtests']);
+    this.router.navigate(['/createtestsparent']);
     // setTimeout(() => this.createtestsComponent.resetComponentState(), 0);
     this.testId = null;
     //this.testEditoruser.resetComponentState();
@@ -828,9 +828,10 @@ export class TestsComponent implements OnInit {
     });
   }
 
-  updateActionButtons(item?:any,action?:any) {
+  updateActionButtons(item?:any, action?:any) {
 
     this.selectedTest = item;
+    console.log('Selected Test ID---------', this.selectedTest?.id);
     this.resetActionButtons();
     if (!this.selectedTest) return;
 
@@ -847,13 +848,12 @@ export class TestsComponent implements OnInit {
     }
     if(this.activeTab === "Upcoming"){
       this.showButton('deleteButton');
-    }
+    }    
 
     this.showButton('viewButton');
   }
 
   showButton(buttonId: string) {
-    console.log(buttonId,'buttonId')
     const button = this.elRef.nativeElement.querySelector(`#${buttonId}`);
     if (button) {
       button.style.display = 'inline-block';
