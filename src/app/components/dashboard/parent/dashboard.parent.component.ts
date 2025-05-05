@@ -40,7 +40,10 @@ export class DashboardParentComponent implements OnInit {
   endDate: Date;
   parentChildReport: any;
   childrenPerformanceReport: any;
+  recommendationsForChild: any;
   grades: ReferenceDataViewModel[] = [];
+  isChildCheckCompleted = false;
+  expandedChildIds: Set<string> = new Set();
 
   allRoles: Role[] = [];
   readonly DBKeyWidgetsOrder = 'home-component.widgets_order';
@@ -152,7 +155,28 @@ export class DashboardParentComponent implements OnInit {
     this.loadData();
     this.parentReport();
     this.childrenPerformance();
+    this.recommendations();
     this.getGrades();
+  }
+
+  toggleChild(childId: string): void {
+    if (this.expandedChildIds.has(childId)) {
+      this.expandedChildIds.delete(childId);
+    } else {
+      this.expandedChildIds.add(childId);
+    }
+  }
+  
+  isExpanded(childId: string): boolean {
+    return this.expandedChildIds.has(childId);
+  }
+
+  hasRecommendations(child: any): boolean {
+    return child.subjects?.some(subject =>
+      (subject.high && subject.high.length > 0) ||
+      (subject.medium && subject.medium.length > 0) ||
+      (subject.low && subject.low.length > 0)
+    );
   }
 
   getGrades(): void {
@@ -201,6 +225,8 @@ export class DashboardParentComponent implements OnInit {
    this.userEditor.changesSavedCallback = () => {
      this.addNewUserToList();
      this.editorModal.hide();
+     this.parentReport();              // Reload parent-child summary
+     this.childrenPerformance();
    };
 
    this.userEditor.changesCancelledCallback = () => {
@@ -271,9 +297,17 @@ export class DashboardParentComponent implements OnInit {
   }
 
   childrenPerformance(): void {
-    this.accountService.getchildrenPerformanceReport()
+    this.accountService.getChildrenPerformanceReport()
       .subscribe(childrenPerformance => {
         this.childrenPerformanceReport = childrenPerformance;
+        // You can now work with the 'grades' array in your component
+      });
+  }
+
+  recommendations(): void {
+    this.accountService.getRecommendations()
+      .subscribe(recommendations => {
+        this.recommendationsForChild = recommendations;
         // You can now work with the 'grades' array in your component
       });
   }
@@ -322,6 +356,7 @@ export class DashboardParentComponent implements OnInit {
     this.rows = users;
 
     this.allRoles = roles;
+    this.isChildCheckCompleted = true;
   }
 
 
@@ -410,7 +445,9 @@ export class DashboardParentComponent implements OnInit {
   }
 
   get isChildAvailable() {
-    return (this?.rows?.length > 0) ? false : true ;
+    // return (this?.rows?.length > 0) ? false : true ;
+    if (!this.isChildCheckCompleted) return null; // render nothing
+    return this.rows.length === 0;
   }
 
   onUserNameClick(event: any, row: any) {

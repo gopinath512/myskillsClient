@@ -1,20 +1,27 @@
 <!--<header class="pageHeader">
   <h3><i class="fa fa-tachometer fa-lg page-caption" aria-hidden="true"></i>Family Learning Dashboard</h3>
 </header>-->
-<div *ngIf="isChildAvailable; else childAdded" class="no-child">  
-  <div class="dashboard">
-    <h1>Welcome, {{userName}}</h1>
-    <p class="info">Empower your child's learning journey with interactive tests and personalized insights.</p>
+<div *ngIf="loadingIndicator" class="spinner-overlay">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<div *ngIf="!loadingIndicator">
+  <div *ngIf="isChildAvailable; else childAdded" class="no-child">
+    <div class="dashboard">
+      <h1>Welcome, {{userName}}</h1>
+      <p class="info">Empower your child's learning journey with interactive tests and personalized insights.</p>
 
-    <div class="section">
+      <div class="section">
         <h3>👶 Add Your Child</h3>
         <p>Start by adding your child to track their progress.</p>
-        <button class="btn btn-primary  createUser"  (click)="newChildUser()">Add child</button>
+        <button class="btn btn-primary  createUser" (click)="newChildUser()">Add child</button>
+      </div>
     </div>
   </div>
 </div>
 <ng-template #childAdded>
-  <div class="container my-4">
+  <div class="container my-4 margin-bottom-3">
     <div class="d-flex justify-content-end align-items-center gap-2 mb-3">
       <button class="btn btn-primary" (click)="createTest()">Create Test</button>
       <button class="btn btn-primary" (click)="newChildUser()">Add Child</button>
@@ -133,6 +140,52 @@
             <div class="col-2 text-end"><i class="bi bi-chevron-right"></i></div>
           </div>
          </div>
+      </div>
+    </div>
+    <div class="card box shadow-sm p-3 mb-3 h-100">
+      <h3 class="fw-bold mb-3">Recommendations</h3>
+    
+      <div *ngFor="let child of recommendationsForChild">
+        <div *ngIf="hasRecommendations(child)">
+          <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center bg-light">
+              <h5 class="mb-0">{{ child.childName }}</h5>
+              <button class="btn btn-link btn-sm p-0" (click)="toggleChild(child.childId)">
+                <i class="bi" [ngClass]="isExpanded(child.childId) ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+              </button>
+            </div>
+          
+            <div *ngIf="isExpanded(child.childId)" class="card-body p-2">
+              <div *ngFor="let subject of child.subjects">
+                
+                <!-- High Priority -->
+                <div *ngFor="let item of subject.high" class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                  <div class="col-3 text-danger fw-semibold">High</div>
+                  <div class="col-6">{{ item.message }}</div>
+                  <div class="col-3 text-end">
+                    <button class="btn btn-sm btn-primary" *ngIf="item.actionable">Create Test</button>
+                  </div>
+                </div>
+          
+                <!-- Medium Priority -->
+                <div *ngFor="let item of subject.medium" class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                  <div class="col-3 text-warning fw-semibold">Medium</div>
+                  <div class="col-6">{{ item.message }}</div>
+                  <div class="col-3 text-end">
+                    <button class="btn btn-sm btn-primary" *ngIf="item.actionable">View Feedback</button>
+                  </div>
+                </div>
+          
+                <!-- Low Priority -->
+                <div *ngFor="let item of subject.low" class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                  <div class="col-3 text-info fw-semibold">Low</div>
+                  <div class="col-6">{{ item.message }}</div>
+                  <div class="col-3 text-end"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
