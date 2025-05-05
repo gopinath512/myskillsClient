@@ -52,8 +52,8 @@ export class TestsComponent implements OnInit {
   selectedRowIndex: number | null = null;
   isResume: boolean = false; // This will determine whether to resume the test
 
-  upcomingTests: TestViewModel[] = [];
-  filteredUpcomingTests: TestViewModel[] = [];
+  pendingTests: TestViewModel[] = [];
+  filteredPendingTests: TestViewModel[] = [];
   filteredInProgressTests: TestViewModel[] = [];
   filteredCompletedTests: TestViewModel[] = [];
 
@@ -322,7 +322,7 @@ export class TestsComponent implements OnInit {
     // Filter based on the active tab
     switch (this.activeTab) {
       case TestStatusViewModel.Upcoming:
-        this.filteredUpcomingTests = this.upcomingTests.filter(test =>
+        this.filteredPendingTests = this.pendingTests.filter(test =>
           test.title.toLowerCase().includes(query.toLowerCase()) // Assuming there's a 'title' property to filter by
         );
         break;
@@ -347,7 +347,7 @@ export class TestsComponent implements OnInit {
       case TestStatusViewModel.InProgress:
         return this.inProgressTests; // Assuming this is already filtered as shown in your example
       case TestStatusViewModel.Upcoming:
-        return this.upcomingTests; // Assuming you have a similar logic to populate this
+        return this.pendingTests; // Assuming you have a similar logic to populate this
       case TestStatusViewModel.Completed:
         return this.completedTests; // Assuming this is already filtered as shown in your example
       default:
@@ -375,7 +375,7 @@ export class TestsComponent implements OnInit {
     // Map the selected tab label to the corresponding TestStatusViewModel
     switch (tabLabel) {
       case 'Pending':
-        status = TestStatusViewModel.Upcoming;
+        status = TestStatusViewModel.Pending;
         break;
       case 'In Progress':
         status = TestStatusViewModel.InProgress;
@@ -398,15 +398,15 @@ export class TestsComponent implements OnInit {
     this.testService.filterTests(status).subscribe({
       next: (data) => {
         // Clear current lists
-        this.upcomingTests = [];
+        this.pendingTests = [];
         this.inProgressTests = [];
         this.completedTests = [];
   
         // Populate the respective array based on selected status
         switch (status) {
-          case TestStatusViewModel.Upcoming:
-            this.upcomingTests = data;
-            this.filteredUpcomingTests = [...data];
+          case TestStatusViewModel.Pending:
+            this.pendingTests = data;
+            this.filteredPendingTests = [...data];
             break;
           case TestStatusViewModel.InProgress:
             this.inProgressTests = data;
@@ -769,6 +769,10 @@ export class TestsComponent implements OnInit {
     return this.accountService.userHasPermission(Permission.editTestsPermission);
   }
 
+  get canViewQuestions() {
+    return this.accountService.userHasPermission(Permission.viewQuestionPermission);
+  }
+
   get canDeleteTests() {
     return this.accountService.userHasPermission(Permission.deleteTestsPermission);
   }
@@ -786,15 +790,15 @@ export class TestsComponent implements OnInit {
     this.testService.filterTests(tabName).subscribe({
       next: (data) => {
         // Clear current lists
-        this.upcomingTests = [];
+        this.pendingTests = [];
         this.inProgressTests = [];
         this.completedTests = [];
   
         // Populate the respective array based on selected status
         switch (tabName) {
-          case TestStatusViewModel.Upcoming:
-            this.upcomingTests = data;
-            this.filteredUpcomingTests = [...data];
+          case TestStatusViewModel.Pending:
+            this.pendingTests = data;
+            this.filteredPendingTests = [...data];
             break;
           case TestStatusViewModel.InProgress:
             this.inProgressTests = data;
@@ -831,26 +835,25 @@ export class TestsComponent implements OnInit {
   updateActionButtons(item?:any, action?:any) {
 
     this.selectedTest = item;
-    console.log('Selected Test ID---------', this.selectedTest?.id);
     this.resetActionButtons();
     if (!this.selectedTest) return;
 
-    const buttonMap: { [key: string]: string } = {
-      start: 'startButton',
-      resume: 'resumeButton',
-      retry: 'retryButton'
-    };
-    if (buttonMap[action]) {
-      this.showButton(buttonMap[action]);
-    }
-    if(this.activeTab === "InProgress" || this.activeTab === "Upcoming"){
-      this.showButton('assignStudentsButton');
-    }
-    if(this.activeTab === "Upcoming"){
-      this.showButton('deleteButton');
-    }    
+    // const buttonMap: { [key: string]: string } = {
+    //   start: 'startButton',
+    //   resume: 'resumeButton',
+    //   retry: 'retryButton'
+    // };
+    // if (buttonMap[action]) {
+    //   this.showButton(buttonMap[action]);
+    // }
+    // if(this.activeTab === "InProgress" || this.activeTab === "Pending"){
+    //   this.showButton('assignStudentsButton');
+    // }
+    // if(this.activeTab === "Pending"){
+    //   this.showButton('deleteButton');
+    // }    
 
-    this.showButton('viewButton');
+    // this.showButton('viewButton');
   }
 
   showButton(buttonId: string) {

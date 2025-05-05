@@ -78,6 +78,8 @@ export class TestTakerComponent implements OnInit {
     } else {
       // Handle scenario where no state is available
     }
+
+    window.addEventListener('unload', this.pauseTestOnUnload.bind(this));
   }
 
 
@@ -253,6 +255,7 @@ export class TestTakerComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    window.removeEventListener('unload', this.pauseTestOnUnload.bind(this));
   }
 
 
@@ -315,6 +318,21 @@ export class TestTakerComponent implements OnInit {
       next: () => console.log('Test paused successfully.'),
       error: (error) => console.error('Error pausing test:', error)
     });
+  }
+
+  pauseTestOnUnload(): void {
+    const currentTime = Date.now();
+    this.pausedTime = currentTime - this.startTime;
+    this.examDetails.pausedTime = this.timeRemaining;
+    this.isPaused = true;
+  
+    const pauseState = {
+      LastQuestionIndex: this.currentQuestionIndex,
+      CurrentAnswersJson: JSON.stringify(this.examDetails)
+    };
+  
+    const blob = new Blob([JSON.stringify(pauseState)], { type: 'application/json' });
+    navigator.sendBeacon(`/api/test/pause/${this.currentAttemptId}`, blob);
   }
 
   //resumeTest(): void {

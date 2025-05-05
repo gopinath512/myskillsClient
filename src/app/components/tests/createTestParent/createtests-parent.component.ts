@@ -8,6 +8,9 @@ import { userToAssignTest } from '../../../models/user/user.model';
 import { AccountService } from '../../../services/account.service';
 import { TestAssignmentViewModel } from '../../../models/assignTest/testAssignment.model';
 import { ActivatedRoute } from '@angular/router';
+import { AlertService, MessageSeverity } from 'src/app/services/alert.service';
+import { AppTranslationService } from 'src/app/services/app-translation.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-createtestsparent',
@@ -54,7 +57,7 @@ export class CreatetestsParentComponent implements OnChanges {
   testType: string = '';
   selectedSubject: any = null;
 
-  constructor(private testService: TestService, private referenceDataService: ReferenceDataService, private accountService: AccountService, private route: ActivatedRoute) {
+  constructor(private testService: TestService, private referenceDataService: ReferenceDataService, private accountService: AccountService, private route: ActivatedRoute, private alertService: AlertService, private translationService: AppTranslationService, private router: Router) {
     // Initialize selectedSubject with the first subject's data if needed
     if (this.subjects.length > 0) {
       this.selectedSubject = this.subjects[0];
@@ -241,9 +244,12 @@ export class CreatetestsParentComponent implements OnChanges {
     // this.unassignedStudents = this.allStudents.filter(student =>
     //   !this.assignedStudents.some(assignedStudent => assignedStudent.id === student.id)
     // );
+    
     this.unassignedStudentsOptions = this.allStudents?.map((student)=>{
-      return({key:student?.id ,value:student?.fullName})
+      return({key:student?.id, value:student?.fullName})
     })
+
+    console.log('Unassigned Students', this.unassignedStudentsOptions);
   }
 
   onDataLoadFailed(error: any) {
@@ -449,7 +455,7 @@ export class CreatetestsParentComponent implements OnChanges {
         "testType": this.testType,
         "difficultyLevel": this.difficultyLevel,
         "selectedTopics": this.testModel.topics,
-        "assignedStudentId": ''
+        "assignedStudentId": this.assignedStudents
     }
 
     if (!this.isEditMode) {
@@ -457,6 +463,12 @@ export class CreatetestsParentComponent implements OnChanges {
       this.testService.saveTest(payload)
         .subscribe(difficultyLevels => {
           this.handleFormSuccess();
+          this.alertService.showStickyMessage(
+            'Success',
+            'Test created successfully.',
+            MessageSeverity.success
+          );
+          this.router.navigate(['dashboard-parent']);
           // You can now work with the 'grades' array in your component
         });
     } else {

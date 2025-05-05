@@ -56,8 +56,12 @@ export class AccountService {
     return this.accountEndpoint.getParentReport();
   }
 
-  getchildrenPerformanceReport() {
-    return this.accountEndpoint.getchildrenPerformanceReport();
+  getChildrenPerformanceReport() {
+    return this.accountEndpoint.getChildrenPerformanceReport();
+  }
+
+  getRecommendations() {
+    return this.accountEndpoint.getRecommendations();
   }
 
   getUsersForAssign() {

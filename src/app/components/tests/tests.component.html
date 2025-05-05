@@ -109,13 +109,13 @@
 </div>
   <!-- Tabs -->
   <div class="tabs">
-    <div class="tab" [class.active]="activeTab === 'Upcoming'" (click)="openTab('Upcoming')">Pending</div>
+    <div class="tab" [class.active]="activeTab === 'Pending'" (click)="openTab('Pending')">Pending</div>
     <div class="tab" [class.active]="activeTab === 'InProgress'" (click)="openTab('InProgress')">In Progress</div>
     <div class="tab" [class.active]="activeTab === 'Completed'" (click)="openTab('Completed')">Completed</div>
   </div>
 
   <!-- Tab Content -->
-  <div *ngIf="activeTab === 'Upcoming'" class="tab-container">
+  <div *ngIf="activeTab === 'Pending'" class="tab-container">
     <table class="test-table">
       <thead>
         <tr>
@@ -125,7 +125,7 @@
           <th>Year</th>
         </tr>
       </thead>
-      <tbody  *ngFor="let item of filteredUpcomingTests; let rowIndex = index">
+      <tbody  *ngFor="let item of filteredPendingTests; let rowIndex = index">
         <tr>
           <td><input
               type="radio"
@@ -197,33 +197,34 @@
   </div>
 
   <!-- Action Buttons -->
-  <div class="action-btn-container">
-    <button *ngIf="canTakeTest && activeTab === TestStatusViewModel.InProgress" class="action-btn start-btn" (click)="onStartTest(selectedTest?.id, selectedTest?.isResume, selectedTest?.attemptId)">
-      <i class="fa fa-play" aria-hidden="true"></i> {{ selectedTest?.isResume ? 'Resume Test' : 'Start Test' }}
-    </button>
-    <button class="action-btn view-btn" *ngIf="canViewTests" id="viewButton" (click)="viewQuestions(selectedTest)">View Questions</button>
-    <button class="btn btn-primary" *ngIf="canViewTestResults" id="viewButton" (click)="showAttemptModal(selectedTest?.id)">Attempts</button>
-    <button *ngIf="canEditTests && activeTab === TestStatusViewModel.Upcoming" class="action-btn start-btn" (click)="editTest(selectedTest?.id)">
-      Edit
-    </button>
-    <button
-      *ngIf="canDeleteTests && activeTab === TestStatusViewModel.Upcoming"
-      class="action-btn delete-btn"
-      id="deleteButton" 
-      (click)="removeTest(selectedTest?.id)"
-    >
-      Delete Test
-    </button>
-      <button
-        *ngIf="!canTakeTest"
-        class="action-btn"
-        id="assignStudentsButton"
-        (click)="showAssignedUsers(selectedTest)"
-        [disabled]="!selectedTest"
-      >
+   <div *ngIf="selectedTest" class="action-btn-container">
+    <div *ngIf="canTakeTest">
+      <button class="btn btn-primary" (click)="onStartTest(selectedTest?.id, selectedTest?.isResume, selectedTest?.attemptId)">
+        {{ selectedTest?.isResume ? 'Resume Test' : 'Start Test' }}
+      </button>
+    </div>
+    <div *ngIf="canTakeTest">
+      <button class="btn btn-primary" id="assignStudentsButton" (click)="showAssignedUsers(selectedTest)" [disabled]="!selectedTest">
         Assign Students
       </button>
-  </div>
+    </div>
+    <div *ngIf="canViewQuestions">
+      <button class="btn btn-primary" id="viewButton" (click)="viewQuestions(selectedTest)">View Questions</button>
+    </div>
+    <div *ngIf="canViewTestResults">
+      <button class="btn btn-primary" id="viewButton" (click)="showAttemptModal(selectedTest?.id)">Attempts</button>
+    </div>
+    <div *ngIf="canEditTests">
+      <button class="btn btn-primary" (click)="editTest(selectedTest?.id)">
+        Edit
+      </button>
+    </div>
+    <div *ngIf="canDeleteTests">
+      <button class="btn btn-primary" id="deleteButton" (click)="removeTest(selectedTest?.id)">
+        Delete Test
+      </button>
+    </div>
+   </div>
 </div> 
 </div>
 
@@ -247,7 +248,7 @@
     <div *ngIf="activeTab === 'InProgress'" class="content">
       
       <div class="custom-table">
-        <!-- Header Row -->
+        Header Row -->
         <!-- <div class="custom-row header">
           <div class="custom-cell">Select</div>
           <div class="custom-cell">Name</div>

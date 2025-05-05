@@ -33,6 +33,7 @@ export class AccountEndpoint extends EndpointBase {
   get permissionsUrl() { return this.configurations.baseUrl + '/api/account/permissions'; }
   get parentReportUrl() { return this.configurations.baseUrl + '/api/ParentReport/overview'; }
   get childrenPerformanceReportUrl() { return this.configurations.baseUrl + '/api/ParentReport/childrenPerformance'; }
+  get recommendationsUrl() { return this.configurations.baseUrl + '/api/ParentReport/recommendations'; }
 
 
   constructor(private configurations: ConfigurationService, http: HttpClient, authService: AuthService) {
@@ -87,11 +88,19 @@ export class AccountEndpoint extends EndpointBase {
       }));
   }
 
-  getchildrenPerformanceReport<T>(): Observable<T> {
+  getChildrenPerformanceReport<T>(): Observable<T> {
     const endpointUrl = this.childrenPerformanceReportUrl;
     return this.http.get<T>(endpointUrl, this.requestHeaders).pipe<T>(
       catchError(error => {
-        return this.handleError(error, () => this.getchildrenPerformanceReport());
+        return this.handleError(error, () => this.getChildrenPerformanceReport());
+      }));
+  }
+
+  getRecommendations<T>(): Observable<T> {
+    const endpointUrl = this.recommendationsUrl;
+    return this.http.get<T>(endpointUrl, this.requestHeaders).pipe<T>(
+      catchError(error => {
+        return this.handleError(error, () => this.getRecommendations());
       }));
   }
 

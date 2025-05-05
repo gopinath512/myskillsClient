@@ -40,5 +40,6 @@ export enum TestStatusViewModel {
   Upcoming = "Upcoming",
   InProgress = "InProgress",
   Completed = "Completed",
+  Pending = "Pending"
 }
 
