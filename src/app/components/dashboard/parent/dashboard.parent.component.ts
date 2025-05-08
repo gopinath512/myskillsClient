@@ -41,6 +41,8 @@ export class DashboardParentComponent implements OnInit {
   parentChildReport: any;
   childrenPerformanceReport: any;
   recommendationsForChild: any;
+  recentActivitiesForChild: any;
+  inProgressTestsOfChild: any;
   grades: ReferenceDataViewModel[] = [];
   isChildCheckCompleted = false;
   expandedChildIds: Set<string> = new Set();
@@ -90,29 +92,6 @@ export class DashboardParentComponent implements OnInit {
     }
   ];
 
-  recentActivities = [
-    {
-      childName: 'John Doe',
-      activityDescription: 'Completed Math Test with 85%',
-      activityDate: new Date(2024, 2, 24),
-      isCompletedTest: true, // Indicator if it's a completed test
-      testId: 1 // Unique identifier for the test
-    },
-    {
-      childName: 'Jane Doe',
-      activityDescription: 'Completed Science Test with 90%',
-      activityDate: new Date(2024, 2, 20),
-      isCompletedTest: true,
-      testId: 2
-    },
-    {
-      childName: 'John Doe',
-      activityDescription: 'Upcoming English Test',
-      activityDate: new Date(2024, 2, 30),
-      isCompletedTest: false
-    }
-  ];
-
   donutData = [
     {
       "name": "Critical",
@@ -157,6 +136,8 @@ export class DashboardParentComponent implements OnInit {
     this.childrenPerformance();
     this.recommendations();
     this.getGrades();
+    this.recentActivities();
+    this.inProgressTests();
   }
 
   toggleChild(childId: string): void {
@@ -227,6 +208,7 @@ export class DashboardParentComponent implements OnInit {
      this.editorModal.hide();
      this.parentReport();              // Reload parent-child summary
      this.childrenPerformance();
+     
    };
 
    this.userEditor.changesCancelledCallback = () => {
@@ -292,7 +274,6 @@ export class DashboardParentComponent implements OnInit {
     this.accountService.getParentReport()
       .subscribe(parentReport => {
         this.parentChildReport = parentReport;
-        // You can now work with the 'grades' array in your component
       });
   }
 
@@ -300,7 +281,6 @@ export class DashboardParentComponent implements OnInit {
     this.accountService.getChildrenPerformanceReport()
       .subscribe(childrenPerformance => {
         this.childrenPerformanceReport = childrenPerformance;
-        // You can now work with the 'grades' array in your component
       });
   }
 
@@ -308,7 +288,21 @@ export class DashboardParentComponent implements OnInit {
     this.accountService.getRecommendations()
       .subscribe(recommendations => {
         this.recommendationsForChild = recommendations;
-        // You can now work with the 'grades' array in your component
+      });
+  }
+
+  recentActivities(): void {
+    this.accountService.getRecentActivities()
+      .subscribe(recentActivities => {
+        this.recentActivitiesForChild = recentActivities;
+        console.log(this.recentActivities, "recentActivities")
+      });
+  }
+
+  inProgressTests(): void {
+    this.accountService.getInProgressTests()
+      .subscribe(inProgressTests => {
+        this.inProgressTestsOfChild = inProgressTests;
       });
   }
 
@@ -503,15 +497,6 @@ export class DashboardParentComponent implements OnInit {
 
     // Trigger modal to display test details
    // $('#testDetailsModal').modal('show'); // Use jQuery to open the modal
-  }
-
-  filterActivitiesByDate() {
-    if (this.startDate && this.endDate) {
-      this.recentActivities = this.recentActivities.filter(activity => {
-        const activityDate = new Date(activity.activityDate);
-        return activityDate >= this.startDate && activityDate <= this.endDate;
-      });
-    }
   }
 
   newChildUser() {
