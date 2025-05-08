@@ -64,6 +64,14 @@ export class AccountService {
     return this.accountEndpoint.getRecommendations();
   }
 
+  getRecentActivities() {
+    return this.accountEndpoint.getRecentActivities();
+  }
+
+  getInProgressTests() {
+    return this.accountEndpoint.getInProgressTests();
+  }
+
   getUsersForAssign() {
     return this.accountEndpoint.getUsersToAssignTestEndpoint<userToAssignTest[]>();
   }

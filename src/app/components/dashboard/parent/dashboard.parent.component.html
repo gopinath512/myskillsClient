@@ -188,6 +188,104 @@
         </div>
       </div>
     </div>
+
+    <div class="card box shadow-sm p-3 mb-3 h-100">
+      <h3 class="fw-bold mb-4">InProgress Tests</h3>
+    
+      <div class="row g-3">
+        <div class="col-12 col-sm-6 col-lg-4" *ngFor="let test of inProgressTestsOfChild">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h4 class="card-title fw-bold text-dark">
+                <i class="bi bi-journal-text me-2 text-secondary"></i>{{ test.testName | uppercase }}
+              </h4>
+              <p class="mb-1"><strong>Created:</strong> {{ test.createdDate | date: 'medium' }}</p>
+              <p class="mb-0">
+                <strong>Assigned To:</strong>
+                <span *ngFor="let child of test.assignedTo; let isLast = last">
+                  {{ child.childName }}<span *ngIf="!isLast">, </span>
+                </span>
+              </p>
+
+              <div>
+                <div class="d-flex justify-content-between mb-1">
+                  <small class="text-muted">Progress</small>
+                  <small class="text-muted">{{ test.progress }}%</small>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div
+                    class="progress-bar bg-success"
+                    role="progressbar"
+                    [style.width.%]="test.progress"
+                    aria-valuenow="{{ test.progress }}"
+                    aria-valuemin="0"
+                    aria-valuemax="100">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card box shadow-sm p-3 mb-3 h-100">
+      <h3 class="fw-bold mb-4">Recent Activities</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Activity Type</th>
+              <th scope="col">Test Title</th>
+              <th scope="col">Subject</th>
+              <th scope="col">Child</th>
+              <th scope="col">Date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Score</th>
+              <th scope="col">Topics</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let activity of recentActivitiesForChild; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ activity.activityType === 'TestCreated' ? 'Created' : 'Taken' }}</td>
+              <td>{{ activity.testTitle }}</td>
+              <td>{{ activity.subjectName }}</td>
+              <td>{{ activity.childName || '-' }}</td>
+              <td>{{ activity.activityUtc | date: 'medium' }}</td>
+    
+              <!-- Conditional bg color for status -->
+              <td class="text-white fw-semibold"
+                [ngClass]="{
+                  'bg-danger': activity.status === 'Failed',
+                  'bg-info': activity.status === 'Assigned',
+                  'bg-warning': activity.status === 'InProgress',
+                  'bg-secondary': activity.status === 'Draft',
+                  'bg-success': activity.status === 'Completed'
+                }"
+              >
+                {{ activity.status }}
+              </td>
+    
+              <td>
+                {{ activity.scorePct !== null ? (activity.scorePct + '%') : '-' }}
+              </td>
+    
+              <td>
+                <ul *ngIf="activity.topics?.length > 0" class="list-unstyled mb-0">
+                  <li *ngFor="let topic of activity.topics">
+                    {{ topic.topicName }} ({{ topic.level }}) - {{ topic.accuracyPct }}%
+                  </li>
+                </ul>
+                <span *ngIf="!activity.topics?.length">-</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
   </div>
   <div>
     <div #widgetsContainer cdkDropList (cdkDropListDropped)="drop($event)" class="row">

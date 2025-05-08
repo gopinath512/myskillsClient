@@ -34,6 +34,8 @@ export class AccountEndpoint extends EndpointBase {
   get parentReportUrl() { return this.configurations.baseUrl + '/api/ParentReport/overview'; }
   get childrenPerformanceReportUrl() { return this.configurations.baseUrl + '/api/ParentReport/childrenPerformance'; }
   get recommendationsUrl() { return this.configurations.baseUrl + '/api/ParentReport/recommendations'; }
+  get recentActivitiesUrl() { return this.configurations.baseUrl + '/api/ParentReport/recentActivities'; }
+  get inProgressTestsUrl() { return this.configurations.baseUrl + '/api/ParentReport/inProgressTests'; }
 
 
   constructor(private configurations: ConfigurationService, http: HttpClient, authService: AuthService) {
@@ -101,6 +103,22 @@ export class AccountEndpoint extends EndpointBase {
     return this.http.get<T>(endpointUrl, this.requestHeaders).pipe<T>(
       catchError(error => {
         return this.handleError(error, () => this.getRecommendations());
+      }));
+  }
+
+  getRecentActivities<T>(): Observable<T> {
+    const endpointUrl = this.recentActivitiesUrl;
+    return this.http.get<T>(endpointUrl, this.requestHeaders).pipe<T>(
+      catchError(error => {
+        return this.handleError(error, () => this.getRecentActivities());
+      }));
+  }
+
+  getInProgressTests<T>(): Observable<T> {
+    const endpointUrl = this.inProgressTestsUrl;
+    return this.http.get<T>(endpointUrl, this.requestHeaders).pipe<T>(
+      catchError(error => {
+        return this.handleError(error, () => this.getInProgressTests());
       }));
   }
 
