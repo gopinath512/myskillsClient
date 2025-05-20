@@ -12,7 +12,7 @@
 
 <div *ngIf="examDetails" [ngClass]="{'content-blurred': isPaused}" class="container my-4">
   <!-- Test Header -->
-  <div class="test-header mb-4" *ngIf="!testStarted">
+  <div class="test-header mb-4" *ngIf="!testStarted && !isResuming">
     <h2>Test Instructions: {{examDetails.examName}}</h2>
     <p>Welcome to your test! Please read the following instructions carefully before starting:</p>
     <ul>
